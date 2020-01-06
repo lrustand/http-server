@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #define LOKAL_PORT 55556
-#define BAK_LOGG 10 // Størrelse på for kø ventende forespørsler 
+#define BAK_LOGG 10 // Størrelse på for kø ventende forespørsler
 
 int main ()
 {
@@ -20,7 +20,7 @@ int main ()
 
   // Initierer lokal adresse
   lok_adr.sin_family      = AF_INET;
-  lok_adr.sin_port        = htons((u_short)LOKAL_PORT); 
+  lok_adr.sin_port        = htons((u_short)LOKAL_PORT);
   lok_adr.sin_addr.s_addr = htonl(         INADDR_ANY);
 
   // Kobler sammen socket og lokal adresse
@@ -30,11 +30,11 @@ int main ()
     exit(1);
 
   // Venter på forespørsel om forbindelse
-  listen(sd, BAK_LOGG); 
-  while(1){ 
+  listen(sd, BAK_LOGG);
+  while(1){
 
     // Aksepterer mottatt forespørsel
-    ny_sd = accept(sd, NULL, NULL);    
+    ny_sd = accept(sd, NULL, NULL);
 
     if(0==fork()) {
 
