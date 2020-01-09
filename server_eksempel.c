@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #define LOKAL_PORT 55556
 #define BAK_LOGG 10 // Størrelse på for kø ventende forespørsler
@@ -40,10 +41,25 @@ int main ()
 
       dup2(ny_sd, 1); // redirigerer socket til standard utgang
 
+      // åpner socket og leser første linje inn i variabel
+      char* txt = NULL;
+      FILE* request = fdopen(ny_sd, "r");
+      size_t len;
+      getline(&txt, &len, request);
+      fclose(request);
+
+      // henter path fra linjen
+      char* saveptr = NULL;
+      strtok_r(txt, " ", &saveptr);
+      char path[256];
+      strcpy(path, strtok_r(NULL, " ", &saveptr));
+
+
       printf("HTTP/1.1 200 OK\n");
       printf("Content-Type: text/plain\n");
       printf("\n");
       printf("Hallo klient!\n");
+      printf("%s\n", path);
 
       fflush(stdout);
 
