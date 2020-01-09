@@ -21,7 +21,7 @@ char* get_mime(char* path)
   // read mime file
   while(len = getline(&txt, &len, mimes))
   {
-    if(strstr(dot, strchr(txt, ' ')))
+    if(strstr(dot, strrchr(txt, '\t') + 1))
     {
       fclose(mimes);
       return strtok(txt, "\t");
