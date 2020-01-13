@@ -40,8 +40,11 @@ int main ()
   listen(sd, BAK_LOGG);
   while(1){
 
-    // Aksepterer mottatt forespørsel
-    ny_sd = accept(sd, NULL, NULL);
+    // Aksepterer mottatt forespørsel og tar vare på ip-adressen til klienten
+	struct sockaddr_in client_addr;
+	socklen_t slen = sizeof(client_addr);
+    ny_sd = accept(sd, (struct sockaddr *)&client_addr, &slen);
+
 
     if(0==fork()) {
 
@@ -59,6 +62,9 @@ int main ()
       strtok_r(txt, " ", &saveptr);
       char path[256];
       strcpy(path, strtok_r(NULL, " ", &saveptr));
+
+	  // Logger requesten til konsollen
+	  dprintf(2,"%s forespør %s\n", inet_ntoa(client_addr.sin_addr), path);
 
       // Sjekker om path er /
 	  if (strcmp(path,"/")==0){
