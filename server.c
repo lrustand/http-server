@@ -3,9 +3,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "print_file.c"
+#include "get_mime.c"
 
 #define LOKAL_PORT 55556
 #define BAK_LOGG 10 // Størrelse på for kø ventende forespørsler
+
+void print_file(char* path);
+char* get_mime(char* path);
 
 int main ()
 {
@@ -54,12 +59,12 @@ int main ()
       char path[256];
       strcpy(path, strtok_r(NULL, " ", &saveptr));
 
+      char* mime = get_mime(path);
 
       printf("HTTP/1.1 200 OK\n");
-      printf("Content-Type: text/plain\n");
+      printf("Content-Type: %s\n", mime);
       printf("\n");
-      printf("Hallo klient!\n");
-      printf("%s\n", path);
+      print_file(path);
 
       fflush(stdout);
 
