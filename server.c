@@ -77,10 +77,18 @@ int main ()
 	  else if (access( path, F_OK ) != -1){
 		  char* mime = get_mime(path);
 
-		  printf("HTTP/1.1 200 OK\n");
-		  printf("Content-Type: %s\n", mime);
-		  printf("\n");
-		  print_file(path);
+		  // Hvis filtypen ikke gjenkjennes, gi feilmelding
+		  if (mime==NULL){
+			  printf("HTTP/1.1 415 Unsupported Media Type");
+			  printf("\n");
+			  printf("<h1>Unsupported Media Type</h1>");
+		  }
+		  else {
+			  printf("HTTP/1.1 200 OK\n");
+			  printf("Content-Type: %s\n", mime);
+			  printf("\n");
+			  print_file(path);
+		  }
       }
 	  // Hvis ikke, send 404
 	  else {
