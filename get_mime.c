@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#define MIMEFILE "./etc/mime.styles"
+#define MIMEFILE "./etc/mime.types"
 
 char* get_mime(char* path)
 {
@@ -16,12 +16,12 @@ char* get_mime(char* path)
   // open mime file
   FILE* mimes = fopen(MIMEFILE, "r");
   char* txt = NULL;
-  size_t len;
+  size_t len = 0;
 
   // read mime file
-  while(len = getline(&txt, &len, mimes))
+  while(getline(&txt, &len, mimes) != -1)
   {
-    if(strstr(dot, strrchr(txt, '\t') + 1))
+    if(strstr(strrchr(txt, '\t') + 1, dot))
     {
       fclose(mimes);
       return strtok(txt, "\t");
