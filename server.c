@@ -67,7 +67,8 @@ int main ()
 		  printf("\n");
 		  directory_listing(path);
       }
-	  else {
+	  // Hvis fila eksisterer, send den
+	  else if (access( path, F_OK ) != -1){
 		  char* mime = get_mime(path);
 
 		  printf("HTTP/1.1 200 OK\n");
@@ -75,6 +76,14 @@ int main ()
 		  printf("\n");
 		  print_file(path);
       }
+	  // Hvis ikke, send 404
+	  else {
+		  printf("HTTP/1.1 404 Not Found\n");
+		  printf("Content-Type: text/html\n");
+		  printf("\n");
+		  printf("<h1>404 File not found</h1>");
+	  }
+
 
       fflush(stdout);
 
