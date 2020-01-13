@@ -7,12 +7,12 @@ char* get_mime(char* path)
 {
   // get file name
   const char* file = strrchr(path, '/') + 1;
-  
+
   // get file extension
   const char* dot = strrchr(file, '.');
   if(!dot || dot == file) dot = " ";
   dot++;
-  
+
   // open mime file
   FILE* mimes = fopen(MIMEFILE, "r");
   char* txt = NULL;
