@@ -5,6 +5,7 @@
 #include <string.h>
 #include "print_file.c"
 #include "get_mime.c"
+#include "directory_listing.c"
 
 #define LOKAL_PORT 55556
 #define BAK_LOGG 10 // Størrelse på for kø ventende forespørsler
@@ -59,12 +60,21 @@ int main ()
       char path[256];
       strcpy(path, strtok_r(NULL, " ", &saveptr));
 
-      char* mime = get_mime(path);
+      // Sjekker om path er /
+	  if (strcmp(path,"/")==0){
+		  printf("HTTP/1.1 200 OK\n");
+		  printf("Content-Type: text/plain\n");
+		  printf("\n");
+		  directory_listing(path);
+      }
+	  else {
+		  char* mime = get_mime(path);
 
-      printf("HTTP/1.1 200 OK\n");
-      printf("Content-Type: %s\n", mime);
-      printf("\n");
-      print_file(path);
+		  printf("HTTP/1.1 200 OK\n");
+		  printf("Content-Type: %s\n", mime);
+		  printf("\n");
+		  print_file(path);
+      }
 
       fflush(stdout);
 
