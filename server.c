@@ -6,12 +6,10 @@
 #include "print_file.c"
 #include "get_mime.c"
 #include "directory_listing.c"
+#include "validate_request.c"
 
 #define LOKAL_PORT 55556
 #define BAK_LOGG 10 // Størrelse på for kø ventende forespørsler
-
-void print_file(char* path);
-char* get_mime(char* path);
 
 int main ()
 {
@@ -57,25 +55,30 @@ int main ()
       getline(&txt, &len, request);
       fclose(request);
 
-      // henter path fra linjen
-      char* saveptr = NULL;
-      strtok_r(txt, " ", &saveptr);
-      char path[256];
-      strcpy(path, strtok_r(NULL, " ", &saveptr));
+      if(validate_request(txt))
+      {
+        // henter path fra linjen
+        char* saveptr = NULL;
+        strtok_r(txt, " ", &saveptr);
+        char path[256];
+        strcpy(path, strtok_r(NULL, " ", &saveptr));
 
-	  // Logger requesten til konsollen
-	  dprintf(2,"%s forespør %s\n", inet_ntoa(client_addr.sin_addr), path);
+	char absolute_path[512] = "";
+	strcat(absolute_path, "/home/da-nan/prosjekt/http-server/www");
+	strcat(absolute_path, path);
+	// Logger requesten til konsollen
+	dprintf(2,"%s forespør %s\n", inet_ntoa(client_addr.sin_addr), path);
 
-      // Sjekker om path er /
-	  if (strcmp(path,"/")==0){
+	// Sjekker om path er /
+	if (strcmp(path,"/")==0){
 		  printf("HTTP/1.1 200 OK\n");
 		  printf("Content-Type: text/plain\n");
 		  printf("\n");
-		  directory_listing(path);
+		  directory_listing(absolute_path);
       }
 	  // Hvis fila eksisterer, send den
-	  else if (access( path, F_OK ) != -1){
-		  char* mime = get_mime(path);
+	  else if (access( absolute_path, F_OK ) != -1){
+		  char* mime = get_mime(absolute_path);
 
 		  // Hvis filtypen ikke gjenkjennes, gi feilmelding
 		  if (mime==NULL){
@@ -87,7 +90,8 @@ int main ()
 			  printf("HTTP/1.1 200 OK\n");
 			  printf("Content-Type: %s\n", mime);
 			  printf("\n");
-			  print_file(path);
+			  fflush(stdout); // nødvendig for å få riktig rekkefølge
+			  print_file(absolute_path);
 		  }
       }
 	  // Hvis ikke, send 404
@@ -97,8 +101,14 @@ int main ()
 		  printf("\n");
 		  printf("<h1>404 File not found</h1>");
 	  }
-
-
+      }
+      else
+      {
+        printf("HTTP/1.1 400 Bad Request\n");
+	printf("Content-Type: text/html\n");
+	printf("\n");
+	printf("<h1>400 Bad Request</h1>");
+      }
       fflush(stdout);
 
       // Sørger for å stenge socket for skriving og lesing
