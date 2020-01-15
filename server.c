@@ -8,6 +8,8 @@
 #include "directory_listing.c"
 #include "validate_request.c"
 
+#define PREFIX "./www"
+
 #define LOKAL_PORT 80
 #define BAK_LOGG 10 // Størrelse på for kø ventende forespørsler
 
@@ -65,7 +67,7 @@ int main ()
 				strcpy(path, strtok_r(NULL, " ", &saveptr));
 
 				char absolute_path[512] = "";
-				strcat(absolute_path, "/home/da-nan/prosjekt/http-server/www");
+				strcat(absolute_path, PREFIX);
 				strcat(absolute_path, path);
 				// Logger requesten til konsollen
 				dprintf(2,"%s forespør %s\n", inet_ntoa(client_addr.sin_addr), path);
