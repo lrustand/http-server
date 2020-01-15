@@ -21,10 +21,18 @@ char* get_mime(char* path)
 	// read mime file
 	while(getline(&line, &len, mimes) != -1)
 	{
-		if(strstr(strrchr(line, '\t') + 1, dot))
+		char tokens [64];
+		strcpy(tokens, strrchr(line, '\t') + 1);
+		char* token;
+		char* saveptr;
+		for(token = strtok_r(tokens, " \n", &saveptr); token != NULL; token = strtok_r(NULL, " \n", &saveptr))
 		{
-			fclose(mimes);
-			return strtok(line, "\t");
+			if(strcmp(token, dot) == 0)
+			{
+				char* mimetype = strtok(line, "\t");
+				fclose(mimes);
+				return mimetype;
+			}
 		}
 	}
 	fclose(mimes);
