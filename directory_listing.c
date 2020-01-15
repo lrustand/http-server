@@ -7,27 +7,27 @@
 
 void directory_listing(char *path){
 
-  struct stat       stat_buffer;
-  struct dirent    *ent;
-  DIR              *dir;
+	struct stat     stat_buffer;
+	struct dirent  *ent;
+	DIR            *dir;
 
-  dir = opendir (path);
-  if (dir == NULL) {
-    perror (""); exit(1); }
+	dir = opendir (path);
+	if (dir == NULL) {
+		perror (""); exit(1); }
 
-  printf ("\nKatalogen %s:\n", path);
-  printf ("------------------------------------\n");
-  printf ("Rettigheter\tUID\tGID\tNavn\n");
-  printf ("------------------------------------\n");
+	printf ("\nKatalogen %s:\n", path);
+	printf ("------------------------------------\n");
+	printf ("Rettigheter\tUID\tGID\tNavn\n");
+	printf ("------------------------------------\n");
 
-  while ((ent = readdir (dir)) != NULL) {
+	while ((ent = readdir (dir)) != NULL) {
 
-    printf ("%o\t\t", stat_buffer.st_mode & 0777 );
-    printf ("%d\t",   stat_buffer.st_uid);
-    printf ("%d\t",   stat_buffer.st_gid);
-    printf ("%s\n",   ent->d_name);
-  }
+		printf ("%o\t\t", stat_buffer.st_mode & 0777 );
+		printf ("%d\t",	 stat_buffer.st_uid);
+		printf ("%d\t",	 stat_buffer.st_gid);
+		printf ("%s\n",	 ent->d_name);
+	}
 
-  closedir (dir);
+	closedir (dir);
 }
 
