@@ -8,7 +8,7 @@
 #include "directory_listing.c"
 #include "validate_request.c"
 
-#define LOKAL_PORT 55556
+#define LOKAL_PORT 80
 #define BAK_LOGG 10 // Størrelse på for kø ventende forespørsler
 
 int main ()
@@ -31,9 +31,10 @@ int main ()
 	// Kobler sammen socket og lokal adresse
 	if ( 0==bind(sd, (struct sockaddr *)&lok_adr, sizeof(lok_adr)) )
 		fprintf(stderr, "Prosess %d er knyttet til port %d.\n", getpid(), LOKAL_PORT);
-	else
+	else {
+		dprintf(2,"Kunne ikke binde port\n");
 		exit(1);
-
+	}
 	// Venter på forespørsel om forbindelse
 	listen(sd, BAK_LOGG);
 	while(1){
