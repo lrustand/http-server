@@ -21,6 +21,8 @@ int main ()
 	struct sockaddr_in	lok_adr;
 	int sd, ny_sd;
 
+	int logfile = open("/var/httpd.log", O_WRONLY | O_APPEND | O_CREAT);
+
 	// Chroot til webroten
 	chroot(PREFIX);
 
@@ -40,9 +42,6 @@ int main ()
 	        exit(0);
 	}
 
-	// Binder stderr til loggfil
-	int logfile = open("/var/httpd.log", O_WRONLY | O_APPEND | O_CREAT);
-	//dup2(logfile, 2);
 	close(2);
 
 	// Stenger stdout
