@@ -129,9 +129,10 @@ int main ()
 
 						// Hvis filtypen ikke gjenkjennes, gi feilmelding
 						if (mime==NULL){
-							printf("HTTP/1.1 415 Unsupported Media Type");
+							printf("HTTP/1.1 415 Unsupported Media Type\n");
+							printf("Content-Type: text/html\n");
 							printf("\n");
-							printf("<h1>Unsupported Media Type</h1>");
+							printf("<h1>415 Unsupported Media Type</h1>");
 						}
 						else {
 							printf("HTTP/1.1 200 OK\n");
