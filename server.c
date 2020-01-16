@@ -65,6 +65,11 @@ int main ()
 		dprintf(logfile, "Kunne ikke binde port\n");
 		exit(1);
 	}
+
+	// Endrer bruker og gruppe til nobody
+	setgid(65534);
+	setuid(65534);
+
 	// Venter på forespørsel om forbindelse
 	listen(sd, BAK_LOGG);
 	while(1){
