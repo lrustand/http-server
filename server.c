@@ -21,6 +21,9 @@ int main ()
 	struct sockaddr_in	lok_adr;
 	int sd, ny_sd;
 
+	// Chroot til webroten
+	chroot(PREFIX);
+
 	// Forker og lukker foreldreprosessen
 	if (fork()!=0){
 	        exit(0);
@@ -106,9 +109,6 @@ int main ()
 					char path[256];
 					strcpy(path, strtok_r(NULL, " ", &saveptr));
 
-					char absolute_path[512] = "";
-					strcat(absolute_path, PREFIX);
-					strcat(absolute_path, path);
 					// Logger requesten til konsollen
 					dprintf(logfile, "%s forespør %s\n", inet_ntoa(client_addr.sin_addr), path);
 
@@ -117,11 +117,11 @@ int main ()
 						printf("HTTP/1.1 200 OK\n");
 						printf("Content-Type: text/plain\n");
 						printf("\n");
-						directory_listing(absolute_path);
+						directory_listing(path);
 					}
 					// Hvis fila eksisterer, send den
-					else if (access( absolute_path, F_OK ) != -1){
-						char* mime = get_mime(absolute_path);
+					else if (access( path, F_OK ) != -1){
+						char* mime = get_mime(path);
 
 						// Hvis filtypen ikke gjenkjennes, gi feilmelding
 						if (mime==NULL){
@@ -134,7 +134,7 @@ int main ()
 							printf("Content-Type: %s\n", mime);
 							printf("\n");
 							fflush(stdout); // nødvendig for å få riktig rekkefølge
-							print_file(absolute_path);
+							print_file(path);
 						}
 					}
 					// Hvis ikke, send 404
