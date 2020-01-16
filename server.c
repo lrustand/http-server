@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <signal.h>
+#include <fcntl.h>
 #include "print_file.c"
 #include "get_mime.c"
 #include "directory_listing.c"
