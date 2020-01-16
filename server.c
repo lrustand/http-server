@@ -58,59 +58,88 @@ int main ()
 			getline(&txt, &len, request);
 			fclose(request);
 
-			if(validate_request(txt))
+			// Remove escape characters \r and \n
+			while(strchr(txt, '\r') != NULL)
 			{
-				// henter path fra linjen
-				char* saveptr = NULL;
-				strtok_r(txt, " ", &saveptr);
-				char path[256];
-				strcpy(path, strtok_r(NULL, " ", &saveptr));
+				strchr(txt, '\r')[0] = '\0';
+			}
 
-				char absolute_path[512] = "";
-				strcat(absolute_path, PREFIX);
-				strcat(absolute_path, path);
-				// Logger requesten til konsollen
-				dprintf(2,"%s forespør %s\n", inet_ntoa(client_addr.sin_addr), path);
+			while(strchr(txt, '\n') != NULL)
+			{
+				strchr(txt, '\n')[0] = '\0';
+			}
 
-				// Sjekker om path er /
-				if (strcmp(path,"/")==0){
-					printf("HTTP/1.1 200 OK\n");
-					printf("Content-Type: text/plain\n");
-					printf("\n");
-					directory_listing(absolute_path);
-				}
-				// Hvis fila eksisterer, send den
-				else if (access( absolute_path, F_OK ) != -1){
-					char* mime = get_mime(absolute_path);
 
-					// Hvis filtypen ikke gjenkjennes, gi feilmelding
-					if (mime==NULL){
-						printf("HTTP/1.1 415 Unsupported Media Type");
-						printf("\n");
-						printf("<h1>Unsupported Media Type</h1>");
-					}
-					else {
+			switch(validate_request(txt))
+			{
+				case 200:
+				{
+					// henter path fra linjen
+					char* saveptr = NULL;
+					strtok_r(txt, " ", &saveptr);
+					char path[256];
+					strcpy(path, strtok_r(NULL, " ", &saveptr));
+
+					char absolute_path[512] = "";
+					strcat(absolute_path, PREFIX);
+					strcat(absolute_path, path);
+					// Logger requesten til konsollen
+					dprintf(2,"%s forespør %s\n", inet_ntoa(client_addr.sin_addr), path);
+
+					// Sjekker om path er /
+					if (strcmp(path,"/")==0){
 						printf("HTTP/1.1 200 OK\n");
-						printf("Content-Type: %s\n", mime);
+						printf("Content-Type: text/plain\n");
 						printf("\n");
-						fflush(stdout); // nødvendig for å få riktig rekkefølge
-						print_file(absolute_path);
+						directory_listing(absolute_path);
 					}
+					// Hvis fila eksisterer, send den
+					else if (access( absolute_path, F_OK ) != -1){
+						char* mime = get_mime(absolute_path);
+
+						// Hvis filtypen ikke gjenkjennes, gi feilmelding
+						if (mime==NULL){
+							printf("HTTP/1.1 415 Unsupported Media Type");
+							printf("\n");
+							printf("<h1>Unsupported Media Type</h1>");
+						}
+						else {
+							printf("HTTP/1.1 200 OK\n");
+							printf("Content-Type: %s\n", mime);
+							printf("\n");
+							fflush(stdout); // nødvendig for å få riktig rekkefølge
+							print_file(absolute_path);
+						}
+					}
+					// Hvis ikke, send 404
+					else {
+						printf("HTTP/1.1 404 Not Found\n");
+						printf("Content-Type: text/html\n");
+						printf("\n");
+						printf("<h1>404 File not found</h1>");
+					}
+					break;
 				}
-				// Hvis ikke, send 404
-				else {
-					printf("HTTP/1.1 404 Not Found\n");
+				case 400:
+					printf("HTTP/1.1 400 Bad Request\n");
 					printf("Content-Type: text/html\n");
 					printf("\n");
-					printf("<h1>404 File not found</h1>");
-				}
-			}
-			else
-			{
-				printf("HTTP/1.1 400 Bad Request\n");
-				printf("Content-Type: text/html\n");
-				printf("\n");
-				printf("<h1>400 Bad Request</h1>");
+					printf("<h1>400 Bad Request</h1>");
+					break;
+
+				case 403:
+					printf("HTTP/1.1 403 Forbidden\n");
+					printf("Content-Type: text/html\n");
+					printf("\n");
+					printf("<h1>403 Forbidden</h1>");
+					break;
+
+				default:
+					printf("HTTP/1.1 400 Bad Request\n");
+					printf("Content-Type: text/html\n");
+					printf("\n");
+					printf("<h1>400 Bad Request</h1>");
+					break;
 			}
 
 			fflush(stdout);
