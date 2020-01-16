@@ -21,11 +21,14 @@ void directory_listing(char *path){
 	printf ("------------------------------------\n");
 
 	while ((ent = readdir (dir)) != NULL) {
-
-		printf ("%o\t\t", stat_buffer.st_mode & 0777 );
-		printf ("%d\t",	 stat_buffer.st_uid);
-		printf ("%d\t",	 stat_buffer.st_gid);
-		printf ("%s\n",	 ent->d_name);
+		if((strcmp(ent->d_name, ".") != 0)
+			&& (strcmp(ent->d_name, "..") != 0))
+		{
+			printf ("%o\t\t", stat_buffer.st_mode & 0777 );
+			printf ("%d\t",	 stat_buffer.st_uid);
+			printf ("%d\t",	 stat_buffer.st_gid);
+			printf ("%s\n",	 ent->d_name);
+		}
 	}
 
 	closedir (dir);
