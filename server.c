@@ -19,6 +19,30 @@ int main ()
 	struct sockaddr_in	lok_adr;
 	int sd, ny_sd;
 
+	// Forker og lukker foreldreprosessen
+	if (fork()!=0){
+	        exit(0);
+	}
+
+	// Setter til sesjonsleder
+	setsid();
+
+	// Ignorerer SIGHUP
+	signal(SIGHUP, SIG_IGN);
+
+	// Forker og lukker foreldreprosessen
+	if (fork()!=0){
+	        exit(0);
+	}
+
+	// Binder stderr til loggfil
+	int logfile = open("/var/httpd.log", O_WRONLY | O_APPEND | O_CREAT);
+	//dup2(logfile, 2);
+	close(2);
+
+	// Stenger stdout
+	close(1);
+
 	// Setter opp socket-strukturen
 	sd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -32,9 +56,9 @@ int main ()
 
 	// Kobler sammen socket og lokal adresse
 	if ( 0==bind(sd, (struct sockaddr *)&lok_adr, sizeof(lok_adr)) )
-		fprintf(stderr, "Prosess %d er knyttet til port %d.\n", getpid(), LOKAL_PORT);
+		dprintf(logfile, "Prosess %d er knyttet til port %d.\n", getpid(), LOKAL_PORT);
 	else {
-		dprintf(2,"Kunne ikke binde port\n");
+		dprintf(logfile, "Kunne ikke binde port\n");
 		exit(1);
 	}
 	// Venter på forespørsel om forbindelse
@@ -84,7 +108,7 @@ int main ()
 					strcat(absolute_path, PREFIX);
 					strcat(absolute_path, path);
 					// Logger requesten til konsollen
-					dprintf(2,"%s forespør %s\n", inet_ntoa(client_addr.sin_addr), path);
+					dprintf(logfile, "%s forespør %s\n", inet_ntoa(client_addr.sin_addr), path);
 
 					// Sjekker om path er /
 					if (strcmp(path,"/")==0){
