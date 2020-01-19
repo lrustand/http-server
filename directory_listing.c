@@ -22,8 +22,7 @@ void directory_listing(char *path){
 
 	while ((ent = readdir (dir)) != NULL) {
 
-		if (stat (ent->d_name, &stat_buffer) < 0)
-			perror(""); exit(2);
+		stat (ent->d_name, &stat_buffer);
 
 		if((strcmp(ent->d_name, ".") != 0)
 			&& (strcmp(ent->d_name, "..") != 0))
