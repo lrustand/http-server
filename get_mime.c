@@ -4,6 +4,7 @@
 
 char* get_mime(char* path, FILE* mimefile)
 {
+	rewind(mimefile);
 	// get file name
 	const char* file = strrchr(path, '/') + 1;
 
@@ -19,20 +20,22 @@ char* get_mime(char* path, FILE* mimefile)
 	// read mime file
 	while(getline(&line, &len, mimefile) != -1)
 	{
-		char tokens [64];
-		strcpy(tokens, strrchr(line, '\t') + 1);
-		char* token;
-		char* saveptr;
-		for(token = strtok_r(tokens, " \n", &saveptr); token != NULL; token = strtok_r(NULL, " \n", &saveptr))
+		if((strstr(line, "#") == NULL) && (strcmp(line, "\n") != 0)
+			&& (strstr(line, "\t") != NULL))
 		{
-			if(strcmp(token, dot) == 0)
+			char tokens [64];
+			strcpy(tokens, strrchr(line, '\t') + 1);
+			char* token;
+			char* saveptr;
+			for(token = strtok_r(tokens, " \n", &saveptr); token != NULL; token = strtok_r(NULL, " \n", &saveptr))
 			{
-				char* mimetype = strtok(line, "\t");
-				rewind(mimefile);
-				return mimetype;
+				if(strcmp(token, dot) == 0)
+				{
+					char* mimetype = strtok(line, "\t");
+					return mimetype;
+				}
 			}
 		}
 	}
-	rewind(mimefile);
 	return NULL;
 }

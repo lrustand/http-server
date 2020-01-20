@@ -11,7 +11,7 @@
 #include "validate_request.c"
 
 #define WEBROOT "./www"
-#define MIMEFILE "./etc/mime.types"
+#define MIMEFILE "/etc/mime.types"
 #define LOGFILE "/var/log/httpd.log"
 #define GID 65534
 #define UID 65534
