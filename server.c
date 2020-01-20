@@ -48,10 +48,10 @@ int main ()
 	        exit(0);
 	}
 
+	// Stenger stdout og stderr
+	close(1);
 	close(2);
 
-	// Stenger stdout
-	close(1);
 
 	// Setter opp socket-strukturen
 	sd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
