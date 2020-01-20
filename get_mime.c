@@ -1,9 +1,8 @@
 #include <string.h>
 #include <stdio.h>
 
-#define MIMEFILE "./etc/mime.types"
 
-char* get_mime(char* path)
+char* get_mime(char* path, FILE* mimefile)
 {
 	// get file name
 	const char* file = strrchr(path, '/') + 1;
@@ -14,12 +13,11 @@ char* get_mime(char* path)
 	dot++;
 
 	// open mime file
-	FILE* mimes = fopen(MIMEFILE, "r");
 	char* line = NULL;
 	size_t len = 0;
 
 	// read mime file
-	while(getline(&line, &len, mimes) != -1)
+	while(getline(&line, &len, mimefile) != -1)
 	{
 		char tokens [64];
 		strcpy(tokens, strrchr(line, '\t') + 1);
@@ -30,11 +28,11 @@ char* get_mime(char* path)
 			if(strcmp(token, dot) == 0)
 			{
 				char* mimetype = strtok(line, "\t");
-				fclose(mimes);
+				rewind(mimefile);
 				return mimetype;
 			}
 		}
 	}
-	fclose(mimes);
+	rewind(mimefile);
 	return NULL;
 }

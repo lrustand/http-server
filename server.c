@@ -11,6 +11,7 @@
 #include "validate_request.c"
 
 #define PREFIX "./www"
+#define MIMEFILE "./etc/mime.types"
 
 #define LOKAL_PORT 80
 #define BAK_LOGG 10 // Størrelse på for kø ventende forespørsler
@@ -22,6 +23,7 @@ int main ()
 	int sd, ny_sd;
 
 	int logfile = open("/var/httpd.log", O_WRONLY | O_APPEND | O_CREAT);
+	FILE* mimefile = fopen(MIMEFILE, "r");
 
 	// Chroot til webroten
 	chroot(PREFIX);
@@ -125,7 +127,7 @@ int main ()
 					}
 					// Hvis fila eksisterer, send den
 					else if (access( path, F_OK ) != -1){
-						char* mime = get_mime(path);
+						char* mime = get_mime(path, mimefile);
 
 						// Hvis filtypen ikke gjenkjennes, gi feilmelding
 						if (mime==NULL){
