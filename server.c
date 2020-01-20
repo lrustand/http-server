@@ -25,8 +25,12 @@ int main ()
 	struct sockaddr_in	lok_adr;
 	int sd, ny_sd;
 
-	int logfile = open(LOGFILE, O_WRONLY | O_APPEND | O_CREAT);
+	// Åpner mimefil
 	FILE* mimefile = fopen(MIMEFILE, "r");
+
+	// Binder stderr til loggfila
+	close(2);
+	open(LOGFILE, O_WRONLY | O_APPEND | O_CREAT);
 
 	// Chroot til webroten
 	chdir(WEBROOT);
@@ -48,9 +52,8 @@ int main ()
 	        exit(0);
 	}
 
-	// Stenger stdout og stderr
+	// Stenger stdout
 	close(1);
-	close(2);
 
 
 	// Setter opp socket-strukturen
@@ -66,9 +69,9 @@ int main ()
 
 	// Kobler sammen socket og lokal adresse
 	if ( 0==bind(sd, (struct sockaddr *)&lok_adr, sizeof(lok_adr)) )
-		dprintf(logfile, "Prosess %d er knyttet til port %d.\n", getpid(), LOKAL_PORT);
+		dprintf(2, "Prosess %d er knyttet til port %d.\n", getpid(), LOKAL_PORT);
 	else {
-		dprintf(logfile, "Kunne ikke binde port\n");
+		dprintf(2, "Kunne ikke binde port\n");
 		exit(1);
 	}
 
@@ -120,7 +123,7 @@ int main ()
 					strcpy(path, strtok_r(NULL, " ", &saveptr));
 
 					// Logger requesten til konsollen
-					dprintf(logfile, "%s forespør %s\n", inet_ntoa(client_addr.sin_addr), path);
+					dprintf(2, "%s forespør %s\n", inet_ntoa(client_addr.sin_addr), path);
 
 					// Sjekker om path er /
 					if (strcmp(path,"/")==0){
