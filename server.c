@@ -29,7 +29,8 @@ int main ()
 	FILE* mimefile = fopen(MIMEFILE, "r");
 
 	// Chroot til webroten
-	chroot(WEBROOT);
+	chdir(WEBROOT);
+	chroot(".");
 
 	// Forker og lukker foreldreprosessen
 	if (fork()!=0){
