@@ -10,8 +10,11 @@
 #include "directory_listing.c"
 #include "validate_request.c"
 
-#define PREFIX "./www"
+#define WEBROOT "./www"
 #define MIMEFILE "./etc/mime.types"
+#define LOGFILE "/var/log/httpd.log"
+#define GID 65534
+#define UID 65534
 
 #define LOKAL_PORT 80
 #define BAK_LOGG 10 // Størrelse på for kø ventende forespørsler
@@ -22,11 +25,11 @@ int main ()
 	struct sockaddr_in	lok_adr;
 	int sd, ny_sd;
 
-	int logfile = open("/var/httpd.log", O_WRONLY | O_APPEND | O_CREAT);
+	int logfile = open(LOGFILE, O_WRONLY | O_APPEND | O_CREAT);
 	FILE* mimefile = fopen(MIMEFILE, "r");
 
 	// Chroot til webroten
-	chroot(PREFIX);
+	chroot(WEBROOT);
 
 	// Forker og lukker foreldreprosessen
 	if (fork()!=0){
@@ -69,8 +72,8 @@ int main ()
 	}
 
 	// Endrer bruker og gruppe til nobody
-	setgid(65534);
-	setuid(65534);
+	setgid(GID);
+	setuid(UID);
 
 	// Venter på forespørsel om forbindelse
 	listen(sd, BAK_LOGG);
