@@ -1,0 +1,17 @@
+#!/bin/sh
+
+read BODY
+
+echo "Content-Type: text/html"
+echo
+
+echo "<pre>"
+
+echo "REQUEST_METHOD: $REQUEST_METHOD"
+echo "QUERY_STRING: $QUERY_STRING"
+echo "CONTENT_LENGTH: $CONTENT_LENGTH"
+echo
+echo "BODY:"
+echo "$BODY"
+
+echo "</pre>"
