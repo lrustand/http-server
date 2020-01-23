@@ -2,7 +2,6 @@
 void print_file(char* path)
 {
 	FILE* file = fopen(path, "r");
-	size_t len = 0;
 	char *buffer;
 	long filelen;
 
