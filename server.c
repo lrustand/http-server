@@ -10,6 +10,7 @@
 #include "directory_listing.c"
 #include "validate_request.c"
 #include "error.c"
+#include "handle_cgi.c"
 
 #define WEBROOT "./www"
 #define MIMEFILE "/etc/mime.types"
@@ -111,34 +112,55 @@ int main ()
 			{
 				strchr(txt, '\n')[0] = '\0';
 			}
+			
+			// henter url fra linjen
+			char* saveptr = NULL;
+			char txt_copy[256];
+			strcpy(txt_copy, txt);
+			strtok_r(txt_copy, " ", &saveptr);
+			char url[256];
+			strcpy(url, strtok_r(NULL, " ", &saveptr));
 
+			// Logger requesten til konsollen
+			dprintf(2, "%s forespør %s\n", inet_ntoa(client_addr.sin_addr), url);
 
+			// Finner path fra url ved å terminere på ? og #
+			char path[256];
+			strcpy(path, url);
+			char* query_ptr = strchr(path, '?');
+			if(query_ptr != NULL)
+			{
+				query_ptr[0] = '\0';
+			}
+
+			query_ptr = strchr(path, '#');
+			if(query_ptr != NULL)
+			{
+				query_ptr[0] = '\0';
+			}
+			
 			switch(validate_request(txt))
 			{
-				case 200:
+				case 1:
 				{
-					// henter path fra linjen
-					char* saveptr = NULL;
-					strtok_r(txt, " ", &saveptr);
-					char path[256];
-					strcpy(path, strtok_r(NULL, " ", &saveptr));
-
-					// Logger requesten til konsollen
-					dprintf(2, "%s forespør %s\n", inet_ntoa(client_addr.sin_addr), path);
-
-					// Sjekker om path er /
-					if (strcmp(path,"/")==0){
+					// Sjekker om url er /
+					if (strcmp(url,"/")==0){
 						printf("HTTP/1.1 200 OK\n");
 						printf("Content-Type: text/plain\n");
 						printf("\n");
-						directory_listing(path);
+						directory_listing(url);
 					}
+
 					// Hvis fila eksisterer, send den
 					else if (access( path, F_OK ) != -1){
-						char* mime = get_mime(path, mimefile);
+						char* mime = get_mime(url, mimefile);
 
 						// Hvis filtypen ikke gjenkjennes, gi feilmelding
-						if (mime==NULL){
+						if(strncmp(url, "/cgi-bin/", 9) == 0)
+						{
+							handle_cgi(url, "GET", request);
+						}
+						else if (mime==NULL){
 							error(415);
 						}
 						else {
@@ -146,7 +168,7 @@ int main ()
 							printf("Content-Type: %s\n", mime);
 							printf("\n");
 							fflush(stdout); // nødvendig for å få riktig rekkefølge
-							print_file(path);
+							print_file(url);
 						}
 					}
 					// Hvis ikke, send 404
@@ -155,12 +177,28 @@ int main ()
 					}
 					break;
 				}
+
+				case 2:
+					if(strncmp(url, "/cgi-bin/", 9))
+					{
+						handle_cgi(url, "POST", request);
+					}
+					else
+					{
+						error(405);
+					}
+					break;
+
 				case 400:
 					error(400);
 					break;
 
 				case 403:
 					error(403);
+					break;
+				
+				case 405:
+					error(405);
 					break;
 
 				default:

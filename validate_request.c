@@ -3,10 +3,19 @@
 
 int validate_request(char* request)
 {
-	// Return 400 if request doesn't start with "GET "
-	if(strncmp(request, "GET ", 4))
+	int type;
+	// Check if request starts with GET or POST
+	if(strncmp(request, "GET ", 4) == 0)
 	{
-		return 400;
+		type = 1;
+	}
+	else if(strncmp(request, "POST ", 5) == 0)
+	{
+		type = 2;
+	}
+	else
+	{
+		return 405;
 	}
 
 	// Return 400 if request doesn't end with "HTTP_._"
@@ -33,10 +42,10 @@ int validate_request(char* request)
 		}
 	}
 
-	// Retrun 200 if there's exactly 2 spaces
+	// Return 1 or 2 if there's exactly 2 spaces
 	if(count == 2)
 	{
-		return 200;
+		return type;
 	}
 	else
 	{
