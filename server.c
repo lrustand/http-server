@@ -9,6 +9,7 @@
 #include "get_mime.c"
 #include "directory_listing.c"
 #include "validate_request.c"
+#include "error.c"
 
 #define WEBROOT "./www"
 #define MIMEFILE "/etc/mime.types"
@@ -138,10 +139,7 @@ int main ()
 
 						// Hvis filtypen ikke gjenkjennes, gi feilmelding
 						if (mime==NULL){
-							printf("HTTP/1.1 415 Unsupported Media Type\n");
-							printf("Content-Type: text/html\n");
-							printf("\n");
-							printf("<h1>415 Unsupported Media Type</h1>");
+							error(415);
 						}
 						else {
 							printf("HTTP/1.1 200 OK\n");
@@ -153,32 +151,20 @@ int main ()
 					}
 					// Hvis ikke, send 404
 					else {
-						printf("HTTP/1.1 404 Not Found\n");
-						printf("Content-Type: text/html\n");
-						printf("\n");
-						printf("<h1>404 File not found</h1>");
+						error(404);
 					}
 					break;
 				}
 				case 400:
-					printf("HTTP/1.1 400 Bad Request\n");
-					printf("Content-Type: text/html\n");
-					printf("\n");
-					printf("<h1>400 Bad Request</h1>");
+					error(400);
 					break;
 
 				case 403:
-					printf("HTTP/1.1 403 Forbidden\n");
-					printf("Content-Type: text/html\n");
-					printf("\n");
-					printf("<h1>403 Forbidden</h1>");
+					error(403);
 					break;
 
 				default:
-					printf("HTTP/1.1 400 Bad Request\n");
-					printf("Content-Type: text/html\n");
-					printf("\n");
-					printf("<h1>400 Bad Request</h1>");
+					error(400);
 					break;
 			}
 
