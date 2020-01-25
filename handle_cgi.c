@@ -6,7 +6,7 @@ void handle_cgi(char* path, char* method, FILE* request)
 {
 	char post_data[1024] = "";
 	int content_length;
-	
+
 	// Initierer query_string med innhold bak ? i path, og separerer path og query_string med \0
 	char* query_string = strchr(path, '?');
 	if(query_string == NULL)
@@ -22,13 +22,13 @@ void handle_cgi(char* path, char* method, FILE* request)
 	// Setter opp en pipe fil
 	int fd[2];
 	pipe(fd);
-	
+
 	if(strcmp(method, "POST") == 0)
 	{
 		char* txt = NULL;
 		size_t len;
 		while(getline(&txt, &len, request) > 1); // Looper til newline eller EOF
-		
+
 		// Leser body inn i post_data
 		while(getline(&txt, &len, request) != -1)
 		{
@@ -46,7 +46,7 @@ void handle_cgi(char* path, char* method, FILE* request)
 
 	// Konstruerer envp
 	char* envp[4];
-	
+
 	for(int i = 0; i < 4; i++)
 	{
 		envp[i] = malloc(256);
@@ -57,7 +57,7 @@ void handle_cgi(char* path, char* method, FILE* request)
 	sprintf(envp[1], "REQUEST_METHOD=%s", method);
 	sprintf(envp[2], "CONTENT_LENGTH=%d", content_length);
 	envp[3] = "\0";
-	
+
 	// Forker og sender post_data
 	if(fork() == 0)
 	{
@@ -66,7 +66,7 @@ void handle_cgi(char* path, char* method, FILE* request)
 		execve(path, &argv[0], &envp[0]);
 		dprintf(2, "%s. Path: %s\n", strerror(errno), path);
 	}
-	
+
 	dprintf(fd[1], post_data);
 	return;
 }
