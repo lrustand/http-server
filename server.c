@@ -116,17 +116,17 @@ int main ()
 
 			// henter url fra linjen
 			char* saveptr = NULL;
-			char line_copy[256];
+			char* line_copy = malloc(strlen(line));
 			strcpy(line_copy, line);
 			strtok_r(line_copy, " ", &saveptr);
-			char url[256];
+			char* url = malloc(strlen(line));
 			strcpy(url, strtok_r(NULL, " ", &saveptr));
 
 			// Logger requesten til konsollen
 			dprintf(2, "%s - %s - ", inet_ntoa(client_addr.sin_addr), line);
 
 			// Finner path fra url ved å terminere på ? og #
-			char path[256];
+			char* path = malloc(strlen(url));
 			strcpy(path, url);
 			char* query_ptr = strchr(path, '?');
 			if(query_ptr != NULL)

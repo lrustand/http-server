@@ -4,8 +4,8 @@
 
 void handle_cgi(char* path, char* method, FILE* request)
 {
-	char post_data[1024] = "";
-	int content_length;
+	char* post_data;
+	int content_length = 0;
 
 	// Initierer query_string med innhold bak ? i path, og separerer path og query_string med \0
 	char* query_string = strchr(path, '?');
@@ -29,7 +29,15 @@ void handle_cgi(char* path, char* method, FILE* request)
 		size_t len;
 		while(getline(&txt, &len, request) > 1); // Looper til newline eller EOF
 
+		// Finner content_length
+		long header_length = ftell(request);
+		fseek(request, 0L, SEEK_END);
+		long request_length = ftell(request);
+		content_length = (int)request_length - (int)header_length;
+		fseek(request, header_length, SEEK_SET);
+
 		// Leser body inn i post_data
+		post_data = malloc(content_length);
 		while(getline(&txt, &len, request) != -1)
 		{
 			strcat(post_data, txt);
