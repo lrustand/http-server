@@ -113,7 +113,7 @@ int main ()
 			{
 				strchr(txt, '\n')[0] = '\0';
 			}
-			
+
 			// henter url fra linjen
 			char* saveptr = NULL;
 			char txt_copy[256];
@@ -139,7 +139,7 @@ int main ()
 			{
 				query_ptr[0] = '\0';
 			}
-			
+
 			if (validate_request(txt))
 			{
 				char* req_type = request_type(txt);
