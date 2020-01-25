@@ -24,6 +24,7 @@ void error(int errorcode){
 			errormessage = "Unsupported Media Type";
 			break;
 	}
+	dprintf(2, "%d %s\n", errorcode, errormessage);
 	printf("HTTP/1.1 %d %s\n", errorcode, errormessage);
 	printf("Content-Type: text/html\n");
 
@@ -32,4 +33,11 @@ void error(int errorcode){
 
 	printf("\n");
 	printf("<h1>%d %s</h1>", errorcode, errormessage);
+
+	fflush(stdout);
+
+	// Sørger for å stenge socket for skriving og lesing
+	// NB! Frigjør ingen plass i fildeskriptortabellen
+	shutdown(1, SHUT_RDWR);
+	exit(0);
 }

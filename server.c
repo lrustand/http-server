@@ -123,7 +123,7 @@ int main ()
 			strcpy(url, strtok_r(NULL, " ", &saveptr));
 
 			// Logger requesten til konsollen
-			dprintf(2, "%s forespør %s\n", inet_ntoa(client_addr.sin_addr), url);
+			dprintf(2, "%s - %s - ", inet_ntoa(client_addr.sin_addr), txt);
 
 			// Finner path fra url ved å terminere på ? og #
 			char path[256];
@@ -191,6 +191,7 @@ int main ()
 				}
 			}
 
+			dprintf(2, "200 OK\n");
 			fflush(stdout);
 
 			// Sørger for å stenge socket for skriving og lesing
