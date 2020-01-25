@@ -1,21 +1,15 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
-int validate_request(char* request)
+bool validate_request(char* request)
 {
-	int type;
 	// Check if request starts with GET or POST
-	if(strncmp(request, "GET ", 4) == 0)
+	if(strncmp(request, "GET ", 4) != 0
+		&& strncmp(request, "POST ", 5) != 0)
 	{
-		type = 1;
-	}
-	else if(strncmp(request, "POST ", 5) == 0)
-	{
-		type = 2;
-	}
-	else
-	{
-		return 405;
+		error(405);
+		return false;
 	}
 
 	// Return 400 if request doesn't end with "HTTP_._"
@@ -23,13 +17,15 @@ int validate_request(char* request)
 		|| strcmp(&request[strlen(request) - 9], " HTTP/1.1") == 0
 		|| strcmp(&request[strlen(request) - 9], " HTTP/2.0") == 0))
 	{
-		return 400;
+		error(400);
+		return false;
 	}
 
 	// check for ..
 	if(strstr(request, "..") != NULL)
 	{
-		return 403;
+		error(403);
+		return false;
 	}
 
 	// count spaces
@@ -42,13 +38,14 @@ int validate_request(char* request)
 		}
 	}
 
-	// Return 1 or 2 if there's exactly 2 spaces
+	// Return true if there's exactly 2 spaces
 	if(count == 2)
 	{
-		return type;
+		return true;
 	}
 	else
 	{
-		return 400;
+		error(400);
+		return false;
 	}
 }

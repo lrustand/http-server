@@ -8,9 +8,10 @@
 #include "print_file.c"
 #include "get_mime.c"
 #include "directory_listing.c"
-#include "validate_request.c"
 #include "error.c"
+#include "validate_request.c"
 #include "handle_cgi.c"
+#include "request_type.c"
 
 #define WEBROOT "./www"
 #define MIMEFILE "/etc/mime.types"
@@ -139,10 +140,11 @@ int main ()
 				query_ptr[0] = '\0';
 			}
 			
-			switch(validate_request(txt))
+			if (validate_request(txt))
 			{
-				case 1:
-				{
+				char* req_type = request_type(txt);
+
+				if (strcmp(req_type, "GET") == 0){
 					// Sjekker om url er /
 					if (strcmp(url,"/")==0){
 						printf("HTTP/1.1 200 OK\n");
@@ -158,7 +160,7 @@ int main ()
 						// Hvis filtypen ikke gjenkjennes, gi feilmelding
 						if(strncmp(url, "/cgi-bin/", 9) == 0)
 						{
-							handle_cgi(url, "GET", request);
+							handle_cgi(url, req_type, request);
 						}
 						else if (mime==NULL){
 							error(415);
@@ -175,35 +177,18 @@ int main ()
 					else {
 						error(404);
 					}
-					break;
 				}
 
-				case 2:
+				else if (strcmp(req_type, "POST") == 0){
 					if(strncmp(url, "/cgi-bin/", 9))
 					{
-						handle_cgi(url, "POST", request);
+						handle_cgi(url, req_type, request);
 					}
 					else
 					{
 						error(405);
 					}
-					break;
-
-				case 400:
-					error(400);
-					break;
-
-				case 403:
-					error(403);
-					break;
-				
-				case 405:
-					error(405);
-					break;
-
-				default:
-					error(400);
-					break;
+				}
 			}
 
 			fflush(stdout);
