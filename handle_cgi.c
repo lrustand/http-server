@@ -46,11 +46,10 @@ void handle_cgi(char* path, char* method, FILE* request)
 
 	// Konstruerer envp
 	char* envp[4];
+	envp[0] = malloc(strlen(query_string) + 14);
+	envp[1] = malloc(strlen(method) + 16);
+	envp[2] = malloc(32);
 
-	for(int i = 0; i < 4; i++)
-	{
-		envp[i] = malloc(256);
-	}
 
 	content_length = (int) strlen(post_data);
 	sprintf(envp[0], "QUERY_STRING=%s", query_string);
