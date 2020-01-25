@@ -4,7 +4,7 @@ OBJECTS = $(wildcard *.c)
 default: container
 
 server: $(OBJECTS)
-	gcc -static server.c -o server
+	gcc -static server.c -o server -Wall
 
 container: server www
 	install -d container
