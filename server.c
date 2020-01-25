@@ -140,54 +140,53 @@ int main ()
 				query_ptr[0] = '\0';
 			}
 
-			if (validate_request(line))
-			{
-				char* req_type = request_type(line);
+			validate_request(line);
 
-				if (strcmp(req_type, "GET") == 0){
-					// Sjekker om url er /
-					if (strcmp(url,"/")==0){
-						printf("HTTP/1.1 200 OK\n");
-						printf("Content-Type: text/plain\n");
-						printf("\n");
-						directory_listing(url);
-					}
+			char* req_type = request_type(line);
 
-					// Hvis fila eksisterer, send den
-					else if (access( path, F_OK ) != -1){
-						char* mime = get_mime(url, mimefile);
-
-						// Hvis filtypen ikke gjenkjennes, gi feilmelding
-						if(strncmp(url, "/cgi-bin/", 9) == 0)
-						{
-							handle_cgi(url, req_type, request);
-						}
-						else if (mime==NULL){
-							error(415);
-						}
-						else {
-							printf("HTTP/1.1 200 OK\n");
-							printf("Content-Type: %s\n", mime);
-							printf("\n");
-							fflush(stdout); // nødvendig for å få riktig rekkefølge
-							print_file(url);
-						}
-					}
-					// Hvis ikke, send 404
-					else {
-						error(404);
-					}
+			if (strcmp(req_type, "GET") == 0){
+				// Sjekker om url er /
+				if (strcmp(url,"/")==0){
+					printf("HTTP/1.1 200 OK\n");
+					printf("Content-Type: text/plain\n");
+					printf("\n");
+					directory_listing(url);
 				}
 
-				else if (strcmp(req_type, "POST") == 0){
-					if(strncmp(url, "/cgi-bin/", 9))
+				// Hvis fila eksisterer, send den
+				else if (access( path, F_OK ) != -1){
+					char* mime = get_mime(url, mimefile);
+
+					// Hvis filtypen ikke gjenkjennes, gi feilmelding
+					if(strncmp(url, "/cgi-bin/", 9) == 0)
 					{
 						handle_cgi(url, req_type, request);
 					}
-					else
-					{
-						error(405);
+					else if (mime==NULL){
+						error(415);
 					}
+					else {
+						printf("HTTP/1.1 200 OK\n");
+						printf("Content-Type: %s\n", mime);
+						printf("\n");
+						fflush(stdout); // nødvendig for å få riktig rekkefølge
+						print_file(url);
+					}
+				}
+				// Hvis ikke, send 404
+				else {
+					error(404);
+				}
+			}
+
+			else if (strcmp(req_type, "POST") == 0){
+				if(strncmp(url, "/cgi-bin/", 9))
+				{
+					handle_cgi(url, req_type, request);
+				}
+				else
+				{
+					error(405);
 				}
 			}
 
