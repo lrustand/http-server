@@ -97,33 +97,33 @@ int main ()
 			dup2(ny_sd, 1); // redirigerer socket til standard utgang
 
 			// åpner socket og leser første linje inn i variabel
-			char* txt = NULL;
+			char* line = NULL;
 			FILE* request = fdopen(ny_sd, "r");
 			size_t len;
-			getline(&txt, &len, request);
+			getline(&line, &len, request);
 			fclose(request);
 
 			// Remove escape characters \r and \n
-			while(strchr(txt, '\r') != NULL)
+			while(strchr(line, '\r') != NULL)
 			{
-				strchr(txt, '\r')[0] = '\0';
+				strchr(line, '\r')[0] = '\0';
 			}
 
-			while(strchr(txt, '\n') != NULL)
+			while(strchr(line, '\n') != NULL)
 			{
-				strchr(txt, '\n')[0] = '\0';
+				strchr(line, '\n')[0] = '\0';
 			}
 
 			// henter url fra linjen
 			char* saveptr = NULL;
-			char txt_copy[256];
-			strcpy(txt_copy, txt);
-			strtok_r(txt_copy, " ", &saveptr);
+			char line_copy[256];
+			strcpy(line_copy, line);
+			strtok_r(line_copy, " ", &saveptr);
 			char url[256];
 			strcpy(url, strtok_r(NULL, " ", &saveptr));
 
 			// Logger requesten til konsollen
-			dprintf(2, "%s - %s - ", inet_ntoa(client_addr.sin_addr), txt);
+			dprintf(2, "%s - %s - ", inet_ntoa(client_addr.sin_addr), line);
 
 			// Finner path fra url ved å terminere på ? og #
 			char path[256];
@@ -140,9 +140,9 @@ int main ()
 				query_ptr[0] = '\0';
 			}
 
-			if (validate_request(txt))
+			if (validate_request(line))
 			{
-				char* req_type = request_type(txt);
+				char* req_type = request_type(line);
 
 				if (strcmp(req_type, "GET") == 0){
 					// Sjekker om url er /
