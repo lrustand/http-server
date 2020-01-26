@@ -77,5 +77,5 @@ void handle_cgi(char* path, char* method, FILE* request)
 
 	dprintf(fd[1], post_data);
 	dprintf(2,"200 OK\n");
-	return;
+	exit(0);
 }

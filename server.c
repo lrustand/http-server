@@ -155,7 +155,6 @@ int main ()
 			if(strncmp(url, "/cgi-bin/", 9) == 0)
 			{
 				handle_cgi(url, req_type, request);
-				exit(0);
 			}
 
 			if (strcmp(req_type, "GET") == 0){
