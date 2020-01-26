@@ -146,8 +146,17 @@ int main ()
 			}
 
 			validate_request(line);
+			if (access( path, F_OK ) == -1){
+				error(404);
+			}
 
 			char* req_type = request_type(line);
+
+			if(strncmp(url, "/cgi-bin/", 9) == 0)
+			{
+				handle_cgi(url, req_type, request);
+				exit(0);
+			}
 
 			if (strcmp(req_type, "GET") == 0){
 				// Sjekker om url er /
@@ -156,40 +165,29 @@ int main ()
 					printf("Content-Type: text/plain\n");
 					printf("\n");
 					directory_listing(url);
+
+					dprintf(2, "200 OK\n");
+					fflush(stdout);
+					shutdown(ny_sd, SHUT_RDWR);
+					exit(0);
 				}
 
-				// Hvis fila eksisterer, send den
-				else if (access( path, F_OK ) != -1){
-					char* mime = get_mime(url, mimefile);
+				char* mime = get_mime(url, mimefile);
 
-					// Hvis filtypen ikke gjenkjennes, gi feilmelding
-					if(strncmp(url, "/cgi-bin/", 9) == 0)
-					{
-						handle_cgi(url, req_type, request);
-					}
-					else if (mime==NULL){
-						error(415);
-					}
-					else {
-						printf("HTTP/1.1 200 OK\n");
-						printf("Content-Type: %s\n", mime);
-						printf("\n");
-						fflush(stdout); // nødvendig for å få riktig rekkefølge
-						print_file(url);
-					}
+				// Hvis filtypen ikke gjenkjennes, gi feilmelding
+				if (mime==NULL){
+					error(415);
 				}
-				// Hvis ikke, send 404
-				else {
-					error(404);
-				}
+
+				printf("HTTP/1.1 200 OK\n");
+				printf("Content-Type: %s\n", mime);
+				printf("\n");
+				fflush(stdout); // nødvendig for å få riktig rekkefølge
+				print_file(url);
 			}
 
 			else if (strcmp(req_type, "POST") == 0){
-				if(strncmp(url, "/cgi-bin/", 9))
-				{
-					handle_cgi(url, req_type, request);
-				}
-				else
+				if(strncmp(url, "/cgi-bin/", 9) != 0)
 				{
 					error(405);
 				}
