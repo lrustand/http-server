@@ -40,6 +40,10 @@ void daemonize()
 	        exit(0);
 	}
 
+	// Binder stderr til loggfila
+	close(2);
+	open(LOGFILE, O_WRONLY | O_APPEND | O_CREAT);
+
 	// Stenger stdout
 	close(1);
 }
@@ -52,10 +56,6 @@ int main ()
 
 	// Åpner mimefil
 	FILE* mimefile = fopen(MIMEFILE, "r");
-
-	// Binder stderr til loggfila
-	close(2);
-	open(LOGFILE, O_WRONLY | O_APPEND | O_CREAT);
 
 	// Demoniserer prosessen
 	daemonize();
