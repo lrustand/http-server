@@ -22,23 +22,8 @@
 #define LOKAL_PORT 80
 #define BAK_LOGG 10 // Størrelse på for kø ventende forespørsler
 
-int main ()
+void daemonize()
 {
-
-	struct sockaddr_in	lok_adr;
-	int sd, ny_sd;
-
-	// Åpner mimefil
-	FILE* mimefile = fopen(MIMEFILE, "r");
-
-	// Binder stderr til loggfila
-	close(2);
-	open(LOGFILE, O_WRONLY | O_APPEND | O_CREAT);
-
-	// Chroot til webroten
-	chdir(WEBROOT);
-	chroot(".");
-
 	// Forker og lukker foreldreprosessen
 	if (fork()!=0){
 	        exit(0);
@@ -57,7 +42,27 @@ int main ()
 
 	// Stenger stdout
 	close(1);
+}
 
+int main ()
+{
+
+	struct sockaddr_in	lok_adr;
+	int sd, ny_sd;
+
+	// Åpner mimefil
+	FILE* mimefile = fopen(MIMEFILE, "r");
+
+	// Binder stderr til loggfila
+	close(2);
+	open(LOGFILE, O_WRONLY | O_APPEND | O_CREAT);
+
+	// Demoniserer prosessen
+	daemonize();
+
+	// Chroot til webroten
+	chdir(WEBROOT);
+	chroot(".");
 
 	// Setter opp socket-strukturen
 	sd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
