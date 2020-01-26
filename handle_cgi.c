@@ -57,23 +57,25 @@ void handle_cgi(char* path, char* method, FILE* request)
 	envp[0] = malloc(strlen(query_string) + 14);
 	envp[1] = malloc(strlen(method) + 16);
 	envp[2] = malloc(32);
+	envp[3] = malloc(1);
 
 
 	content_length = (int) strlen(post_data);
 	sprintf(envp[0], "QUERY_STRING=%s", query_string);
 	sprintf(envp[1], "REQUEST_METHOD=%s", method);
 	sprintf(envp[2], "CONTENT_LENGTH=%d", content_length);
-	envp[3] = "\0";
+	envp[3] = (char*)0;
 
 	// Forker og sender post_data
 	if(fork() == 0)
 	{
 		close(0);
 		dup2(fd[0], 0);
-		execve(path, &argv[0], &envp[0]);
+		execve(path, &argv[0], envp);
 		dprintf(2, "%s. Path: %s\n", strerror(errno), path);
 	}
 
 	dprintf(fd[1], post_data);
+	dprintf(2,"200 OK\n");
 	return;
 }
