@@ -53,6 +53,9 @@ void handle_cgi(char* path, char* query_string, char* method, FILE* request)
 	sprintf(envp[2], "CONTENT_LENGTH=%d", content_length);
 	envp[3] = (char*)0;
 
+	// Send statuskode ok
+	printf("HTTP/1.1 200 OK\n");
+
 	// Forker og sender post_data
 	if(fork() == 0)
 	{
