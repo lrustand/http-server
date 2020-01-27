@@ -60,10 +60,6 @@ int main ()
 	// Demoniserer prosessen
 	daemonize();
 
-	// Chroot til webroten
-	chdir(WEBROOT);
-	chroot(".");
-
 	// Setter opp socket-strukturen
 	sd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -83,9 +79,6 @@ int main ()
 		exit(1);
 	}
 
-	// Endrer bruker og gruppe til nobody
-	setgid(GID);
-	setuid(UID);
 
 	// Venter på forespørsel om forbindelse
 	listen(sd, BAK_LOGG);
@@ -159,15 +152,39 @@ int main ()
 			}
 
 			validate_request(line);
-			if (access( path, F_OK ) == -1){
-				error(404);
-			}
 
 			char* req_type = request_type(line);
 
 			if(strncmp(url, "/cgi-bin/", 9) == 0)
 			{
-				handle_cgi(url, query, req_type, request);
+				char* prefixed_path = malloc(strlen(path+4));
+				sprintf(prefixed_path, "/www%s", path);
+
+				// Sjekker om fila finnes
+				if (access( prefixed_path, F_OK ) == -1){
+					error(404);
+				}
+
+				// Endrer bruker og gruppe til nobody
+				setgid(GID);
+				setuid(UID);
+
+				// Kjører CGI programmet
+				handle_cgi(prefixed_path, query, req_type, request);
+			}
+
+
+			// Chroot til webroten
+			chdir(WEBROOT);
+			chroot(".");
+
+			// Endrer bruker og gruppe til nobody
+			setgid(GID);
+			setuid(UID);
+
+			// Sjekker om fila finnes
+			if (access( path, F_OK ) == -1){
+				error(404);
 			}
 
 			if (strcmp(req_type, "GET") == 0){
