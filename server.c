@@ -99,7 +99,6 @@ int main ()
 			FILE* request = fdopen(ny_sd, "r");
 			size_t len;
 			getline(&line, &len, request);
-			fclose(request);
 
 			// Remove escape characters \r and \n
 			while(strchr(line, '\r') != NULL)

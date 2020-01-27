@@ -4,7 +4,7 @@
 
 void handle_cgi(char* path, char* query_string, char* method, FILE* request)
 {
-	char* post_data;
+	char* post_data = "\n";
 	int content_length = 0;
 
 	// Setter opp en pipe fil
@@ -48,7 +48,6 @@ void handle_cgi(char* path, char* query_string, char* method, FILE* request)
 	envp[3] = malloc(1);
 
 
-	content_length = (int) strlen(post_data);
 	sprintf(envp[0], "QUERY_STRING=%s", query_string);
 	sprintf(envp[1], "REQUEST_METHOD=%s", method);
 	sprintf(envp[2], "CONTENT_LENGTH=%d", content_length);
