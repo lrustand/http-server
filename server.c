@@ -130,19 +130,32 @@ int main ()
 			// Logger requesten til konsollen
 			dprintf(2, "%s - %s - ", inet_ntoa(client_addr.sin_addr), line);
 
-			// Finner path fra url ved å terminere på ? og #
+			// Finner path og query fra url ved å terminere på ?
 			char* path = malloc(strlen(url));
 			strcpy(path, url);
-			char* query_ptr = strchr(path, '?');
-			if(query_ptr != NULL)
+			char* query = strchr(path, '?');
+			if(query == NULL)
 			{
-				query_ptr[0] = '\0';
+				query = "";
+			}
+			else
+			{
+				query[0] = '\0';
+				query++;
 			}
 
-			query_ptr = strchr(path, '#');
-			if(query_ptr != NULL)
+			// Stripper vekk fragment fra path/query og legger det i egen variabel
+			char* fragment;
+			if (strcmp(query,"") == 0) fragment = strchr(path, '#');
+			else fragment = strchr(query, '#');
+			if(fragment == NULL)
 			{
-				query_ptr[0] = '\0';
+				fragment = "";
+			}
+			else
+			{
+				fragment[0] = '\0';
+				fragment++;
 			}
 
 			validate_request(line);
@@ -154,7 +167,7 @@ int main ()
 
 			if(strncmp(url, "/cgi-bin/", 9) == 0)
 			{
-				handle_cgi(url, req_type, request);
+				handle_cgi(url, query, req_type, request);
 			}
 
 			if (strcmp(req_type, "GET") == 0){

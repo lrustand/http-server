@@ -2,22 +2,10 @@
 #include <unistd.h>
 #include <errno.h>
 
-void handle_cgi(char* path, char* method, FILE* request)
+void handle_cgi(char* path, char* query_string, char* method, FILE* request)
 {
 	char* post_data;
 	int content_length = 0;
-
-	// Initierer query_string med innhold bak ? i path, og separerer path og query_string med \0
-	char* query_string = strchr(path, '?');
-	if(query_string == NULL)
-	{
-		query_string = "";
-	}
-	else
-	{
-		query_string++;
-		strchr(path, '?')[0] = '\0';
-	}
 
 	// Setter opp en pipe fil
 	int fd[2];
