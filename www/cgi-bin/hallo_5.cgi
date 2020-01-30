@@ -2,7 +2,9 @@
 echo "Content-type:text/html;charset=utf-8"
 echo
 
-LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
+if [ "$REQUEST_METHOD" = "POST" ]; then
+	LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
+fi
 
 cat << EOF
 <!doctype html>
