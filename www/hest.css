@@ -1,0 +1,24 @@
+body 
+{
+	background-color:#ffb3d1;
+}
+
+h1
+{
+	color:			#ff00ff;
+	font-family:	"Impact";
+}
+
+th 
+{ 
+	color:      #ff30a0;
+	text-align: center;
+}
+
+td
+{ 
+	font-family: "Comic Sans MS";
+	font-size:   15px;
+	font-style: italic;
+	color:		#660066;
+}
