@@ -10,6 +10,7 @@
 #include "directory_listing.c"
 #include "error.c"
 #include "validate_request.c"
+#include "get_headers.c"
 #include "handle_cgi.c"
 #include "request_type.c"
 
@@ -99,6 +100,8 @@ int main ()
 			FILE* request = fdopen(ny_sd, "r");
 			size_t len;
 			getline(&line, &len, request);
+
+			read_headers(request);
 
 			// Remove escape characters \r and \n
 			while(strchr(line, '\r') != NULL)
