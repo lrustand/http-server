@@ -159,7 +159,7 @@ int main ()
 
 			if(strncmp(url, "/cgi-bin/", 9) == 0)
 			{
-				char* prefixed_path = malloc(strlen(path)+4);
+				char* prefixed_path = malloc(1000);
 				sprintf(prefixed_path, "/www%s", path);
 
 				// Sjekker om fila finnes
