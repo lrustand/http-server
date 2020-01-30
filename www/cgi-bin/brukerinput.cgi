@@ -19,7 +19,10 @@ Content-type: application/xml; charset=utf-8
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="/styletest.xsl"?>
 
-<book>
+<book	xmlns="http://www.w3schools.com/RedsDevils"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.w3schools.com/RedsDevils /xmlschematest.xsd">
+
 	<title>$title</title>
 	<author>$author</author>
 	<year>$year</year>
