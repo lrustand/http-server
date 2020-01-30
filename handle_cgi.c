@@ -5,7 +5,9 @@
 void handle_cgi(char* path, char* query_string, char* method, FILE* request)
 {
 	char* post_data = "\n";
-	int content_length = 0;
+	char* content_length_str = get_header("Content-Length");
+	if (content_length_str==NULL) content_length_str="0";
+	int content_length = atoi(content_length_str);
 
 	// Setter opp en pipe fil
 	int fd[2];
@@ -13,23 +15,11 @@ void handle_cgi(char* path, char* query_string, char* method, FILE* request)
 
 	if(strcmp(method, "POST") == 0)
 	{
-		char* txt = NULL;
-		size_t len;
-		while(getline(&txt, &len, request) > 1); // Looper til newline eller EOF
-
-		// Finner content_length
-		long header_length = ftell(request);
-		fseek(request, 0L, SEEK_END);
-		long request_length = ftell(request);
-		content_length = (int)request_length - (int)header_length;
-		fseek(request, header_length, SEEK_SET);
-
 		// Leser body inn i post_data
 		post_data = malloc(content_length);
-		while(getline(&txt, &len, request) != -1)
-		{
-			strcat(post_data, txt);
-		}
+		fread(post_data, content_length, 1, request);
+
+		post_data[content_length+1] = 0;
 	}
 	else if(strcmp(method, "GET") != 0)
 	{
@@ -44,7 +34,7 @@ void handle_cgi(char* path, char* query_string, char* method, FILE* request)
 	char* envp[4];
 	envp[0] = malloc(strlen(query_string) + 14);
 	envp[1] = malloc(strlen(method) + 16);
-	envp[2] = malloc(32);
+	envp[2] = malloc(strlen(content_length_str) + 16);
 	envp[3] = malloc(1);
 
 
