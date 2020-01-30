@@ -2,7 +2,7 @@
 echo "Content-type:text/html;charset=utf-8"
 echo
 
-read BODY
+LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
 
 cat << EOF
 <!doctype html>
