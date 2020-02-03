@@ -17,7 +17,7 @@
 							<th>Title</th> <th>Author</th> <th>Year</th>
 						</tr>
 
-						<xsl:for-each select="bookstore/book">
+						<xsl:for-each select="book">
 
 						<tr>
 							<td><xsl:value-of select="title"	/></td>
