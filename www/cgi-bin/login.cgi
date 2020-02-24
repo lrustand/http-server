@@ -1,6 +1,5 @@
 #!/bin/sh
 echo "Content-Type: text/html;charset=utf-8"
-echo
 
 if [ "$REQUEST_METHOD" = "POST" ]; then
 	LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
@@ -11,8 +10,9 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
 	REQUEST="${REQUEST}${JSON}\r\n"
 	>&2 echo -e "$REQUEST"
 	>&2 echo -e "$BODY"
-	echo -e -n "$REQUEST" | >&2 nc 127.0.0.1 3000
+	echo -e -n "$REQUEST" | nc 127.0.0.1 3000 | grep Set-Cookie
 fi
+echo
 
 cat << EOF
 <html>
