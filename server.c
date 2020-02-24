@@ -47,6 +47,7 @@ void daemonize()
 
 	// Stenger stdout
 	close(1);
+	close(0);
 }
 
 int main ()
