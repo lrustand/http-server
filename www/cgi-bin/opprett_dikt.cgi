@@ -4,11 +4,11 @@ echo
 
 if [ "$REQUEST_METHOD" = "POST" ]; then
 	LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
-	JSON=$(echo "{\"$BODY\"}" | sed -e "s/\&/\"\,\"/g" -e "s/\=/\"\:\"/g")
+	JSON=$(echo -n "{\"$BODY\"}" | sed -e "s/\&/\"\,\"/g" -e "s/\=/\"\:\"/g")
 	REQUEST="POST /diktsamling/dikt/ HTTP/1.1\n"
 	REQUEST=$REQUEST"Content-Type: application/json\n"
-	REQUEST=$REQUEST"Content-Length: $(echo $JSON | wc -c)\n\n"
-	REQUEST=${REQUEST}${JSON}
+	REQUEST=$REQUEST"Content-Length: $(echo -n "$JSON" | wc -c)\n\n"
+	REQUEST="${REQUEST}${JSON}\r\n"
 	>&2 echo -e "$REQUEST"
 	>&2 echo -e "$BODY"
 	echo -e -n "$REQUEST" | >&2 nc 127.0.0.1 3000
