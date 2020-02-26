@@ -8,8 +8,6 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
 	REQUEST=$REQUEST"Content-Type: application/json\n"
 	REQUEST=$REQUEST"Content-Length: $(echo -n "$JSON" | wc -c)\n\n"
 	REQUEST="${REQUEST}${JSON}\r\n"
-	>&2 echo -e "$REQUEST"
-	>&2 echo -e "$BODY"
 	echo -e -n "$REQUEST" | nc 127.0.0.1 3000 | grep Set-Cookie
 fi
 echo
