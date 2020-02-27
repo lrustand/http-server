@@ -4,12 +4,8 @@ echo
 
 if [ "$REQUEST_METHOD" = "POST" ]; then
 	LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
-	JSON=$(echo -n "{\"$BODY\"}" | sed -e "s/\&/\"\,\"/g" -e "s/\=/\"\:\"/g")
-	REQUEST="POST /diktsamling/dikt/ HTTP/1.1\n"
-	REQUEST=$REQUEST"Content-Type: application/json\n"
-	REQUEST=$REQUEST"Content-Length: $(echo -n "$JSON" | wc -c)\n\n"
-	REQUEST="${REQUEST}${JSON}\r\n"
-	echo -e -n "$REQUEST" | >&2 nc 127.0.0.1 3000
+	JSON=$(echo -n "{\"$BODY\"}" | sed -e 's/&/","/g' -e 's/=/":"/g')
+	RESPONSE=$(wget --post-data="$JSON" http://127.0.0.1:3000/diktsamling/dikt/ --header "Content-Type: application/json" -qO- -S 2>&1)
 fi
 
 cat << EOF
