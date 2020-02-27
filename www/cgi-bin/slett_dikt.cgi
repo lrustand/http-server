@@ -31,14 +31,15 @@ cat << EOF
 		<form action="" method='post'>
 			<select name="dikt" size="4">
 EOF
-	IFS=","
-	for LINE in $OUTPUT; do
-		echo "<option value=\"$(echo "$LINE" | cut -d ':' -f 2 | tr -d '\n' | tr -d ' ' )\">$LINE</option>"
-	done
+
+IFS=","
+for LINE in $OUTPUT; do
+	echo "<option value=\"$(echo "$LINE" | cut -d ':' -f 2 | tr -d '\n' | tr -d ' ' )\">$LINE</option>"
+done
 
 cat << EOF
-			</select> 
-			<br> 
+			</select>
+			<br>
 			<input type='submit' value='Slett dikt'>
 		</form>
 	</body>
