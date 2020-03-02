@@ -4,6 +4,13 @@ echo
 
 if [ "$REQUEST_METHOD" = "POST" ]; then
 	LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
+	if [[ ! -z "$BODY"  ]]; then
+		ID=$(echo "$BODY" | cut -d '=' -f 2 )
+		wget --method=DELETE "http://127.0.0.1:3000/diktsamling/dikt/$ID"
+	else 
+		echo "NO BODY"
+		echo "BODY: "$BODY
+	fi
 	#if empty request -> delete all
 	#else -> delete diktID
 fi
@@ -15,8 +22,7 @@ cat << EOF
 	</head>
 EOF
 
-	REQUEST="GET /diktsamling/dikt/ HTTP/1.1\n\n"
-	OUTPUT=$(echo -e -n "$REQUEST" | wget http://79.161.249.112:3000/diktsamling/dikt/ -qO- -S 2>&1 | grep diktid )
+	OUTPUT=$(wget http://127.0.0.1:3000/diktsamling/dikt/ -qO- -S 2>&1 | grep diktid )
 
 cat << EOF
 	<body>
