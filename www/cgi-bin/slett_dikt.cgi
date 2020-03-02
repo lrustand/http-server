@@ -6,7 +6,9 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
 	LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
 	if [[ ! -z "$BODY"  ]]; then
 		ID=$(echo "$BODY" | cut -d '=' -f 2 )
-		wget --method=DELETE "http://127.0.0.1:3000/diktsamling/dikt/$ID"
+		#wget --method=DELETE "http://127.0.0.1:3000/diktsamling/dikt/$ID"
+		REQUEST="DELETE /diktsamling/dikt/$ID HTTP/1.1\n\n"
+		echo -e -n "$REQUEST" | nc 127.0.0.1 3000
 	else 
 		echo "NO BODY"
 		echo "BODY: "$BODY
