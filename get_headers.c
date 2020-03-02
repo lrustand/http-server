@@ -35,7 +35,6 @@ char* get_header(char* header)
 			break;
 		}
 		if (strcmp(headers[i].name,header)==0){
-			dprintf(2, "%s: %s\n", headers[i].name, headers[i].value);
 			return headers[i].value;
 		}
 	}
