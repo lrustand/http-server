@@ -29,19 +29,22 @@ void handle_cgi(char* path, char* query_string, char* method, FILE* request)
 	}
 
 	char* argv[] = {path, 0};
+	char* cookie = get_header("Cookie");
 
 	// Konstruerer envp
-	char* envp[4];
+	char* envp[5];
 	envp[0] = malloc(strlen(query_string) + 14);
 	envp[1] = malloc(strlen(method) + 16);
 	envp[2] = malloc(strlen(content_length_str) + 16);
-	envp[3] = malloc(1);
+	envp[3] = malloc(strlen(cookie) + 8);
+	envp[4] = malloc(1);
 
 
 	sprintf(envp[0], "QUERY_STRING=%s", query_string);
 	sprintf(envp[1], "REQUEST_METHOD=%s", method);
 	sprintf(envp[2], "CONTENT_LENGTH=%d", content_length);
-	envp[3] = (char*)0;
+	sprintf(envp[3], "COOKIE=%s", cookie);
+	envp[4] = (char*)0;
 
 	// Send statuskode ok
 	printf("HTTP/1.1 200 OK\n");
