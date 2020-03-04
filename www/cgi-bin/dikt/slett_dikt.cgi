@@ -10,12 +10,11 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
 		REQUEST="DELETE /diktsamling/dikt/$ID HTTP/1.1\n"
 		REQUEST="${REQUEST}Cookie: ${COOKIE}\n\n"
 		echo -e -n "$REQUEST" | nc 127.0.0.1 3000
-	else 
-		echo "NO BODY"
-		echo "BODY: "$BODY
+	else
+		REQUEST="DELETE /diktsamling/dikt/ HTTP/1.1\n"
+		REQUEST="${REQUEST}Cookie: ${COOKIE}\n\n"
+		echo -e -n "$REQUEST" | nc 127.0.0.1 3000
 	fi
-	#if empty request -> delete all
-	#else -> delete diktID
 fi
 cat << EOF
 <html>
