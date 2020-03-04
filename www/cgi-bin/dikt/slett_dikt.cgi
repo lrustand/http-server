@@ -6,41 +6,37 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
 	LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
 	if [[ ! -z "$BODY"  ]]; then
 		ID=$(echo "$BODY" | cut -d '=' -f 2 )
-		#wget --method=DELETE "http://127.0.0.1:3000/diktsamling/dikt/$ID"
-		REQUEST="DELETE /diktsamling/dikt/$ID HTTP/1.1\n"
-		REQUEST="${REQUEST}Cookie: ${COOKIE}\n\n"
-		echo -e -n "$REQUEST" | nc 127.0.0.1 3000
-	else
-		REQUEST="DELETE /diktsamling/dikt/ HTTP/1.1\n"
-		REQUEST="${REQUEST}Cookie: ${COOKIE}\n\n"
-		echo -e -n "$REQUEST" | nc 127.0.0.1 3000
 	fi
+	REQUEST="DELETE /diktsamling/dikt/$ID HTTP/1.1\n"
+	REQUEST="${REQUEST}Cookie: ${COOKIE}\n\n"
+	RESPONSE=$(echo -e -n "$REQUEST" | nc 127.0.0.1 3000)
 fi
+
 cat << EOF
 <html>
 	<head>
-		<meta charset='utf-8'>
+		<meta charset="utf-8">
 		<title>Slett dikt</title>
 	</head>
-EOF
-
-	OUTPUT=$(wget http://127.0.0.1:3000/diktsamling/bruker/ --header="Cookie: $COOKIE" -qO- -S 2>&1 | grep diktid )
-
-cat << EOF
 	<body>
-		<form action="" method='post'>
+		<form action="" method="post">
 			<select name="dikt" size="4">
 EOF
 
+
+OUTPUT=$(wget http://127.0.0.1:3000/diktsamling/bruker/ --header="Cookie: $COOKIE" -qO- -S 2>&1 | grep diktid )
+
 IFS=","
 for LINE in $OUTPUT; do
-	echo "<option value=\"$(echo "$LINE" | cut -d ':' -f 2 | tr -d '\n' | tr -d ' ' )\">$LINE</option>"
+	DIKTID="$(echo "$LINE" | cut -d ':' -f 2 | tr -d '\n' | tr -d ' ')"
+	echo -e "\t\t\t\t<option value=\"$DIKTID\">$DIKTID</option>"
 done
+
 
 cat << EOF
 			</select>
 			<br>
-			<input type='submit' value='Slett dikt'>
+			<input type="submit" value="Slett dikt">
 		</form>
 	</body>
 </html>
