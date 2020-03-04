@@ -7,7 +7,8 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
 	if [[ ! -z "$BODY"  ]]; then
 		ID=$(echo "$BODY" | cut -d '=' -f 2 )
 		#wget --method=DELETE "http://127.0.0.1:3000/diktsamling/dikt/$ID"
-		REQUEST="DELETE /diktsamling/dikt/$ID HTTP/1.1\n\n"
+		REQUEST="DELETE /diktsamling/dikt/$ID HTTP/1.1\n"
+		REQUEST="${REQUEST}Cookie: ${COOKIE}\n\n"
 		echo -e -n "$REQUEST" | nc 127.0.0.1 3000
 	else 
 		echo "NO BODY"
@@ -24,7 +25,7 @@ cat << EOF
 	</head>
 EOF
 
-	OUTPUT=$(wget http://127.0.0.1:3000/diktsamling/dikt/ -qO- -S 2>&1 | grep diktid )
+	OUTPUT=$(wget http://127.0.0.1:3000/diktsamling/bruker/ --header="Cookie: $COOKIE" -qO- -S 2>&1 | grep diktid )
 
 cat << EOF
 	<body>
