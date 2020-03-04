@@ -5,7 +5,12 @@ echo
 if [ "$REQUEST_METHOD" = "POST" ]; then
 	LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
 	JSON=$(echo -n "{\"$BODY\"}" | sed -e 's/&/","/g' -e 's/=/":"/g')
-	RESPONSE=$(wget --post-data="$JSON" http://127.0.0.1:3000/diktsamling/dikt/ --header "Content-Type: application/json" -qO- -S 2>&1)
+	REQUEST="POST /diktsamling/dikt HTTP/1.1\n"
+	REQUEST="${REQUEST}Content-Type: application/json\n"
+	REQUEST="${REQUEST}Content-Length: $(echo $JSON | wc -c)\n"
+	REQUEST="${REQUEST}Cookie: ${COOKIE}\n\n"
+	REQUEST="${REQUEST}${JSON}"
+	RESPONSE=$(echo -e -n "$REQUEST" | nc 127.0.0.1 3000)
 fi
 
 cat << EOF
@@ -16,8 +21,6 @@ cat << EOF
 	</head>
 	<body>
 		<form action="" method='post'>
-			<input type=text name='epostadresse' placeholder='epost'>
-			<br>
 			<textarea name='dikt' rows='10' cols='30' placeholder='Skriv dikt her'></textarea>
 			<br>
 			<input type='submit' value='Opprett dikt'>
