@@ -1,0 +1,11 @@
+body {
+	background-color: skyblue;
+}
+
+h1 {
+	background-color: pink;
+}
+
+select {
+	width: 150px;
+}
