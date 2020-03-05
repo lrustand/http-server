@@ -20,10 +20,11 @@ cat << EOF
 	<head>
 		<meta charset="utf-8">
 		<title>Slett dikt</title>
+		<link rel="stylesheet" type="text/css" href="/defaultStyle.css">
 	</head>
 	<body>
 		<form action="" method="post">
-			<select name="dikt" size="4">
+			<select name="dikt" size="10">
 EOF
 
 
@@ -40,6 +41,7 @@ cat << EOF
 			</select>
 			<br>
 			<input type="submit" value="Slett dikt">
+			<input type="submit" value="Slett alle dikt">
 		</form>
 	</body>
 </html>
