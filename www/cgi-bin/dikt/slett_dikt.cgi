@@ -3,8 +3,8 @@ echo "Content-Type: text/html;charset=utf-8"
 echo
 
 if [ "$REQUEST_METHOD" = "POST" ]; then
-	LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
-	if [[ ! -z "$BODY"  ]]; then
+	if [[ $CONTENT_LENGTH -gt 0 ]]; then
+		LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
 		ID=$(echo "$BODY" | cut -d '=' -f 2 )
 	fi
 	REQUEST="DELETE /diktsamling/dikt/$ID HTTP/1.1\n"
