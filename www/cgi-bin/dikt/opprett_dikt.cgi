@@ -8,7 +8,10 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
 	REQUEST="POST /diktsamling/dikt HTTP/1.1\n"
 	REQUEST="${REQUEST}Content-Type: application/json\n"
 	REQUEST="${REQUEST}Content-Length: $(echo $JSON | wc -c)\n"
-	REQUEST="${REQUEST}Cookie: ${COOKIE}\n\n"
+	if [[ ! -z "$COOKIE" ]]; then
+		REQUEST="${REQUEST}Cookie: ${COOKIE}\n"
+	fi
+	REQUEST="${REQUEST}\n"
 	REQUEST="${REQUEST}${JSON}"
 	RESPONSE=$(echo -e -n "$REQUEST" | nc 127.0.0.1 3000)
 fi

@@ -38,5 +38,5 @@ char* get_header(char* header)
 			return headers[i].value;
 		}
 	}
-	return NULL;
+	return "";
 }

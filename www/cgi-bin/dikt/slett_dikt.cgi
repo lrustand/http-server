@@ -8,7 +8,10 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
 		ID=$(echo "$BODY" | cut -d '=' -f 2 )
 	fi
 	REQUEST="DELETE /diktsamling/dikt/$ID HTTP/1.1\n"
-	REQUEST="${REQUEST}Cookie: ${COOKIE}\n\n"
+	if [[ ! -z "$COOKIE" ]]; then
+		REQUEST="${REQUEST}Cookie: ${COOKIE}\n"
+	fi
+	REQUEST="${REQUEST}\n"
 	RESPONSE=$(echo -e -n "$REQUEST" | nc 127.0.0.1 3000)
 fi
 
