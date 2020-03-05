@@ -48,6 +48,7 @@ void handle_cgi(char* path, char* query_string, char* method, FILE* request)
 
 	// Send statuskode ok
 	printf("HTTP/1.1 200 OK\n");
+	fflush(stdout);
 
 	// Forker og sender post_data
 	if(fork() == 0)
