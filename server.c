@@ -117,7 +117,7 @@ int main ()
 
 			// henter url fra linjen
 			char* saveptr = NULL;
-			char* line_copy = malloc(strlen(line));
+			char* line_copy = malloc(strlen(line) + 1);
 			strcpy(line_copy, line);
 			strtok_r(line_copy, " ", &saveptr);
 			char* url = malloc(strlen(line));
@@ -127,7 +127,7 @@ int main ()
 			dprintf(2, "%s - %s - ", inet_ntoa(client_addr.sin_addr), line);
 
 			// Finner path og query fra url ved å terminere på ?
-			char* path = malloc(strlen(url));
+			char* path = malloc(strlen(url) + 1);
 			strcpy(path, url);
 			char* query = strchr(path, '?');
 			if(query == NULL)
