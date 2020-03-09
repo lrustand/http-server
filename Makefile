@@ -21,4 +21,4 @@ container: server www
 
 clean:
 	rm -rf container
-	rm server
+	rm -f server
