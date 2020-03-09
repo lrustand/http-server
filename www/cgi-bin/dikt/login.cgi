@@ -7,9 +7,9 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
 	COOKIE=$(wget --post-data="$JSON" http://127.0.0.1:3000/diktsamling/bruker/ --header "Content-Type: application/json" -qO- -S 2>&1 | grep Set-Cookie)
 	echo
 	if [ -z "$COOKIE" ]; then
-		echo "Wrong username or password!"
+		echo "Feil bruekrnavn eller passord!"
 	else
-		echo "You successfully logged in"
+		echo "Du er nå logget inn"
 	fi
 else
 	echo
