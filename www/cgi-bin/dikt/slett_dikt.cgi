@@ -5,9 +5,19 @@ echo
 if [ "$REQUEST_METHOD" = "POST" ]; then
 	if [[ $CONTENT_LENGTH -gt 0 ]]; then
 		LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
+		NAME=$(echo "$BODY" | cut -d '=' -f 1)
 		ID=$(echo "$BODY" | cut -d '=' -f 2 )
+		echo $ID
 	fi
-	REQUEST="DELETE /diktsamling/dikt/$ID HTTP/1.1\n"
+	if [ "$NAME" = "*" ]; then
+		REQUEST="DELETE /diktsamling/dikt/ HTTP/1.1\n"
+	else
+		if [[ "$ID" = "" ]]; then
+			echo "Velg et dikt før du prøver å slette!"
+		else
+			REQUEST="DELETE /diktsamling/dikt/$ID HTTP/1.1\n"
+		fi
+	fi
 	if [[ ! -z "$COOKIE" ]]; then
 		REQUEST="${REQUEST}Cookie: ${COOKIE}\n"
 	fi
@@ -23,6 +33,18 @@ cat << EOF
 		<link rel="stylesheet" type="text/css" href="/defaultStyle.css">
 	</head>
 	<body>
+		<div class="header">
+			<a href="#default">Diktsamling</a>
+			<div class="header-right">
+				<a href="#home">Home</a>
+				<a href="#horse">Horse?</a>
+		</div>
+
+		<div>
+			<h1>Slett dikt</h1>
+			<p>Vil du slette noen dikt?</p>
+			<p>Da er det bare å trykke i vei!</p>
+		</div>
 		<form action="" method="post">
 			<select name="dikt" size="10">
 EOF
@@ -40,8 +62,8 @@ done
 cat << EOF
 			</select>
 			<br>
-			<input type="submit" value="Slett dikt">
-			<input type="submit" value="Slett alle dikt">
+			<input type="submit" value="Slett dikt"/>
+			<input type="submit" name="*" value="Slett alle dikt"/>
 		</form>
 	</body>
 </html>
