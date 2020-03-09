@@ -30,23 +30,23 @@ cat << EOF
 	<head>
 		<meta charset="utf-8">
 		<title>Slett dikt</title>
-		<link rel="stylesheet" type="text/css" href="/defaultStyle.css">
+		<link rel="stylesheet" type="text/css" href="/defaultStyle.css" />
 	</head>
 	<body>
 		<div class="header">
-			<a href="#default">Diktsamling</a>
+			<a href="#Home"><b>Home<b/></a>
 			<div class="header-right">
-				<a href="#home">Home</a>
-				<a href="#horse">Horse?</a>
+				<a href="opprett_dikt.cgi">Opprett Dikt</a>
+				<a href="login.cgi">Login</a>
+			</div>
 		</div>
-
-		<div>
+		
+		<div class="main">
 			<h1>Slett dikt</h1>
 			<p>Vil du slette noen dikt?</p>
 			<p>Da er det bare å trykke i vei!</p>
-		</div>
-		<form action="" method="post">
-			<select name="dikt" size="10">
+			<form action="" method="post">
+				<select name="dikt" size="10">
 EOF
 
 
@@ -60,11 +60,12 @@ done
 
 
 cat << EOF
-			</select>
-			<br>
-			<input type="submit" value="Slett dikt"/>
-			<input type="submit" name="*" value="Slett alle dikt"/>
-		</form>
+				</select>
+				<br>
+				<input type="submit" value="Slett dikt"/>
+				<input type="submit" name="*" value="Slett alle dikt"/>
+			</form>
+		</div>
 	</body>
 </html>
 EOF
