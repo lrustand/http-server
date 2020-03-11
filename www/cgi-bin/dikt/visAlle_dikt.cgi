@@ -15,7 +15,7 @@ for DIKT in $ALLE_DIKT; do
 	FORNAVN=$(hent_felt fornavn)
 	ETTERNAVN=$(hent_felt etternavn)
 	echo "<div class='dikt'>"
-	echo "<h3>Dikt #$DIKTID</h3>"
+	echo "<h3><a href=vis_dikt.cgi?diktid=$DIKTID>Dikt #$DIKTID</a></h3>"
 	echo "Skrevet av: $FORNAVN $ETTERNAVN"
 	echo "</div>"
 done
