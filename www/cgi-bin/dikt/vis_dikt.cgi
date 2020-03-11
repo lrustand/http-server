@@ -27,6 +27,7 @@ cat << EOF
 		<title>Vis Dikt</title>
 	</head>
 	<body>
+		$(/www/cgi-bin/dikt/header.cgi)
 		<h1 style='color: red'>Kunne ikke finne dikt #$DIKTID</h1>
 	</body>
 </html>
@@ -39,6 +40,7 @@ cat << EOF
 		<title>Vis Dikt</title>
 	</head>
 	<body>
+		$(/www/cgi-bin/dikt/header.cgi)
 		<h1>Dikt #$DIKTID</h1>
 		<pre>$DIKT</pre>
 		<p><i>- $FORNAVN $ETTERNAVN<i><p>

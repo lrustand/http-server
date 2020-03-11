@@ -25,6 +25,7 @@ cat << EOF
 		<title>Logg Inn</title>
 	</head>
 	<body>
+		$(/www/cgi-bin/dikt/header.cgi)
 		<form action="" method='post'>
 			<input type=text name='username' placeholder='epost'>
 			<br>

@@ -33,6 +33,7 @@ cat << EOF
 		<link rel="stylesheet" type="text/css" href="/defaultStyle.css" />
 	</head>
 	<body>
+		$(/www/cgi-bin/dikt/header.cgi)
 		<div class="header">
 			<a href="#Home"><b>Home<b/></a>
 			<div class="header-right">

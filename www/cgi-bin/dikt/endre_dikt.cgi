@@ -40,6 +40,7 @@ cat << EOF
 		<title>Endre Dikt</title>
 	</head>
 	<body>
+		$(/www/cgi-bin/dikt/header.cgi)
 		$ERR
 		<form action="" method='post'>
 			<textarea name='dikt' rows='10' cols='30' placeholder='Skriv dikt her'>$DIKT</textarea>

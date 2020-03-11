@@ -23,6 +23,7 @@ cat << EOF
 		<title>Opprett Dikt</title>
 	</head>
 	<body>
+		$(/www/cgi-bin/dikt/header.cgi)
 		<form action="" method='post'>
 			<textarea name='dikt' rows='10' cols='30' placeholder='Skriv dikt her'></textarea>
 			<br>

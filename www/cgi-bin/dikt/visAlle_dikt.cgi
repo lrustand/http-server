@@ -2,6 +2,8 @@
 echo "Content-Type: text/html;charset=utf-8"
 echo
 
+/www/cgi-bin/dikt/header.cgi
+
 ALLE_DIKT=$(wget -qO- http://127.0.0.1:3000/diktsamling/dikt/)
 
 IFS="}"

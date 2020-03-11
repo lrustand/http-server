@@ -19,6 +19,7 @@ cat << EOF
 		<title>Logg ut</title>
 	</head>
 	<body>
+		$(/www/cgi-bin/dikt/header.cgi)
 		<form action="" method='post'>
 			<input type='hidden' name='session' value='$COOKIE'>
 			<input type='submit' value='Logg ut'>
