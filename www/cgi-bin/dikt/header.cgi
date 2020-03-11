@@ -35,7 +35,12 @@ cat << EOF
     </style>
     <ul>
       <li><a href="/cgi-bin/dikt/home.cgi">Hjem</a></li>
-      <li style="float:right"><a href="/cgi-bin/dikt/login.cgi">Logg inn</a></li>
-      <li style="float:right"><a href="/cgi-bin/dikt/logout.cgi">Logg ut</a></li>
-    </ul>
 EOF
+
+if [[ -z "$COOKIE" ]]; then
+	echo "<li style="float:right"><a href="/cgi-bin/dikt/login.cgi">Logg inn</a></li>"
+else
+	echo "<li style="float:right"><a href="/cgi-bin/dikt/logout.cgi">Logg ut</a></li>"
+fi
+
+echo "</ul>"
