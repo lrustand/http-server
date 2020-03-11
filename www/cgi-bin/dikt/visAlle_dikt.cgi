@@ -2,34 +2,20 @@
 echo "Content-Type: text/html;charset=utf-8"
 echo
 
-OUTPUT=$(wget -qO- http://127.0.0.1:3000/diktsamling/dikt/ )
-echo "$OUTPUT"
-grepAndStrip(){
-	echo "$OUTPUT" | grep "diktid" | cut -d '"' -f 3 | sed -e "s/[: ,]//g"
-	echo "$OUTPUT" | grep 'dikt"' | cut -d '"' -f 3 | sed -e "s/[: ,]//g"
+ALLE_DIKT=$(wget -qO- http://127.0.0.1:3000/diktsamling/dikt/)
 
-}
-
-grepAndStrip
-
-cat << EOF
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>Dikt</title>
-	</head>
-	<body>
-		<div class="header">
-			<a href="visAlle_dikt.cgi"><b>Home<b/></a>
-			<div class="header-right">
-				<a href="opprett_dikt.cgi">Opprett Dikt</a>
-				<a href="login.cgi">Login</a>
-			</div>
-		</div>
-		
-		<div class="main">
-			<h1>Vis Alle Dikt :)</h1>
-		</div>
-	</body>
-</html>
-EOF
+IFS="}"
+for DIKT in $ALLE_DIKT; do
+	hent_felt ()
+	{
+		echo "$DIKT" | grep $1 |  cut -d : -f 2 | sed -e 's/[ ,"]//g'
+	}
+	DIKTID=$(hent_felt diktid)
+	INNHOLD=$(hent_felt dikt\")
+	FORNAVN=$(hent_felt fornavn)
+	ETTERNAVN=$(hent_felt etternavn)
+	echo "<div class='dikt'>"
+	echo "<h3>Dikt #$DIKTID</h3>"
+	echo "Skrevet av: $FORNAVN $ETTERNAVN"
+	echo "</div>"
+done
