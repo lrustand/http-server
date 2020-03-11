@@ -1,14 +1,8 @@
 #!/bin/sh
-echo "Content-Type: text/html"
-echo
-
 cat << EOF
 
-<html>
-  <head>
     <style>
       ul {
-        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
@@ -39,13 +33,9 @@ cat << EOF
         background-color: #070;
       }
     </style>
-  </head>
-  <body>
     <ul>
       <li><a href="/cgi-bin/dikt/home.cgi">Hjem</a></li>
       <li style="float:right"><a href="/cgi-bin/dikt/login.cgi">Logg inn</a></li>
       <li style="float:right"><a href="/cgi-bin/dikt/logout.cgi">Logg ut</a></li>
     </ul>
-  </body>
-</html>
 EOF
