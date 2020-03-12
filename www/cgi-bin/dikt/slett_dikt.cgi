@@ -7,15 +7,17 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
 		LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
 		NAME=$(echo "$BODY" | cut -d '=' -f 1)
 		ID=$(echo "$BODY" | cut -d '=' -f 2 )
-		echo $ID
 	fi
 	if [ "$NAME" = "*" ]; then
 		REQUEST="DELETE /diktsamling/dikt/ HTTP/1.1\n"
+		echo "Alle dine dikt er nå slettet!"
 	else
 		if [[ "$ID" = "" ]]; then
 			echo "Velg et dikt før du prøver å slette!"
 		else
 			REQUEST="DELETE /diktsamling/dikt/$ID HTTP/1.1\n"
+			echo "Dikt#$ID er slettet"
+
 		fi
 	fi
 	if [[ ! -z "$COOKIE" ]]; then
