@@ -37,4 +37,4 @@ for DIKT in $ALLE_DIKT; do
 	fi
 done
 
-echo "/<div>"
+echo "</div>"
