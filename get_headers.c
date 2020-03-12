@@ -21,6 +21,9 @@ void read_headers(FILE* request)
 		while(sep[0]==' '){sep++;}
 		strcpy(headers[i].name, line);
 		strcpy(headers[i].value, sep);
+
+		// Fjerner newline
+		headers[i].value[strlen(headers[i].value)-2] = '\0';
 		i++;
 	}; // Looper til newline eller EOF
 }
