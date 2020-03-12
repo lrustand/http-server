@@ -38,9 +38,9 @@ cat << EOF
 EOF
 
 if [[ -z "$COOKIE" ]]; then
-	echo "<li style="float:right"><a href="/cgi-bin/dikt/login.cgi">Logg inn</a></li>"
+	echo '<li style="float:right"><a href="/cgi-bin/dikt/login.cgi">Logg inn</a></li>'
 else
-	echo "<li style="float:right"><a href="/cgi-bin/dikt/logout.cgi">Logg ut</a></li>"
+	echo '<li style="float:right"><a href="/cgi-bin/dikt/logout.cgi">Logg ut</a></li>'
 fi
 
 echo "</ul>"
