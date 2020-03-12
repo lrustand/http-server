@@ -24,11 +24,13 @@ cat << EOF
 	</head>
 	<body>
 		$(/www/cgi-bin/dikt/header.cgi)
+		<div class="main">
 		<form action="" method='post'>
 			<textarea name='dikt' rows='10' cols='30' placeholder='Skriv dikt her'></textarea>
 			<br>
 			<input type='submit' value='Opprett dikt'>
 		</form>
+		</div>
 	</body>
 </html>
 EOF

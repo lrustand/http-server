@@ -27,6 +27,7 @@ cat << EOF
 	</head>
 	<body>
 		$(/www/cgi-bin/dikt/header.cgi)
+		<div class='main'>
 EOF
 
 if [[ -z "$DIKT" ]]; then
@@ -38,5 +39,6 @@ else
 		<p><i>- $FORNAVN $ETTERNAVN<i><p>
 EOF
 fi
+echo "</div>"
 echo "</body>"
 echo "</html>"

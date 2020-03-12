@@ -41,12 +41,14 @@ cat << EOF
 	</head>
 	<body>
 		$(/www/cgi-bin/dikt/header.cgi)
+		<div class='main'>
 		$ERR
 		<form action="" method='post'>
 			<textarea name='dikt' rows='10' cols='30' placeholder='Skriv dikt her'>$DIKT</textarea>
 			<br>
 			<input type='submit' value='Endre dikt'>
 		</form>
+		</div>
 	</body>
 </html>
 EOF

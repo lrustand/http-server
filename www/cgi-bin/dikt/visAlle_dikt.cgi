@@ -6,6 +6,8 @@ echo
 
 ALLE_DIKT=$(wget -qO- http://127.0.0.1:3000/diktsamling/dikt/)
 
+echo "<div class='main'>"
+
 IFS="}"
 for DIKT in $ALLE_DIKT; do
 	hent_felt ()
@@ -34,3 +36,5 @@ for DIKT in $ALLE_DIKT; do
 		echo "</div>"
 	fi
 done
+
+echo "/<div>"
