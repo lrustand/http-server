@@ -34,14 +34,6 @@ cat << EOF
 	</head>
 	<body>
 		$(/www/cgi-bin/dikt/header.cgi)
-		<div class="header">
-			<a href="#Home"><b>Home<b/></a>
-			<div class="header-right">
-				<a href="opprett_dikt.cgi">Opprett Dikt</a>
-				<a href="login.cgi">Login</a>
-			</div>
-		</div>
-		
 		<div class="main">
 			<h1>Slett dikt</h1>
 			<p>Vil du slette noen dikt?</p>
