@@ -19,7 +19,6 @@ if [[ -z "$FORNAVN$ETTERNAVN" ]]; then
 	ETTERNAVN="bruker"
 fi
 
-if [[ -z "$DIKT" ]]; then
 cat << EOF
 <html>
 	<head>
@@ -28,23 +27,16 @@ cat << EOF
 	</head>
 	<body>
 		$(/www/cgi-bin/dikt/header.cgi)
-		<h1 style='color: red'>Kunne ikke finne dikt #$DIKTID</h1>
-	</body>
-</html>
 EOF
+
+if [[ -z "$DIKT" ]]; then
+	echo "<h1 style='color: red'>Kunne ikke finne dikt #$DIKTID</h1>"
 else
-cat << EOF
-<html>
-	<head>
-		<meta charset='utf-8'>
-		<title>Vis Dikt</title>
-	</head>
-	<body>
-		$(/www/cgi-bin/dikt/header.cgi)
+	cat << EOF
 		<h1>Dikt #$DIKTID</h1>
 		<pre>$DIKT</pre>
 		<p><i>- $FORNAVN $ETTERNAVN<i><p>
-	</body>
-</html>
 EOF
 fi
+echo "</body>"
+echo "</html>"
