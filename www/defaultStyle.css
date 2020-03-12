@@ -44,3 +44,43 @@ select {
 	width: 200px;
 }
 
+.dikt+.dikt
+{
+	border-top: 1px solid black;
+	padding: 0px 0px 10px 0px;
+}
+ul {
+	top: 0;
+	left: 0;
+	width: 100%;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #333;
+}
+
+li {
+	float: left;
+}
+.white {
+	color: gray;
+	padding: 10px 15px;
+	text-align: center;
+}
+
+li a {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 10px 15px;
+	text-decoration: none;
+}
+
+li a:hover {
+	background-color: #111;
+}
+
+.active {
+	background-color: #070;
+}
