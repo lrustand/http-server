@@ -44,11 +44,15 @@ select {
 	width: 200px;
 }
 
+.dikt {
+	padding: 0px 0px 10px 0px;
+}
+
 .dikt+.dikt
 {
 	border-top: 1px solid black;
-	padding: 0px 0px 10px 0px;
 }
+
 ul {
 	top: 0;
 	left: 0;
