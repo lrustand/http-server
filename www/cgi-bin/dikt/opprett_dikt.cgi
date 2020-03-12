@@ -13,7 +13,7 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
 	fi
 	REQUEST="${REQUEST}\n"
 	REQUEST="${REQUEST}${JSON}"
-	RESPONSE=$(echo -e -n "$REQUEST" | nc 127.0.0.1 3000)
+	RESPONSE=$(echo -e -n "$REQUEST\n" | nc 127.0.0.1 3000)
 fi
 
 cat << EOF
