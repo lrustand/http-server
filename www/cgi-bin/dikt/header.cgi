@@ -46,6 +46,7 @@ INNLOGGET_SOM=$(wget http://127.0.0.1:3000/diktsamling/sesjon --header "Cookie: 
 if [[ "$INNLOGGET_SOM" = "null" ]]; then
 	echo '<li style="float:right"><a href="/cgi-bin/dikt/login.cgi">Logg inn</a></li>'
 else
+	echo "<li><a href=opprett_dikt.cgi>Opprett dikt</a>"
 	echo '<li style="float:right"><a href="/cgi-bin/dikt/logout.cgi">Logg ut</a></li>'
 	echo "<li style=\"float:right\" class='white'>Logget inn som $INNLOGGET_SOM </li>"
 fi
