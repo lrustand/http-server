@@ -26,8 +26,11 @@ for DIKT in $ALLE_DIKT; do
 		FORNAVN=Anonym
 		ETTERNAVN=bruker
 	fi
-	echo "<div class='dikt'>"
-	echo "<h3><a href=vis_dikt.cgi?diktid=$DIKTID>Dikt #$DIKTID</a></h3>"
-	echo "Skrevet av: $FORNAVN $ETTERNAVN"
-	echo "</div>"
+
+	if [[ ! -z "$DIKTID" ]]; then
+		echo "<div class='dikt'>"
+		echo "<h3><a href=vis_dikt.cgi?diktid=$DIKTID>Dikt #$DIKTID</a></h3>"
+		echo "Skrevet av: $FORNAVN $ETTERNAVN"
+		echo "</div>"
+	fi
 done
