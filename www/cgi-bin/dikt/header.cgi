@@ -1,7 +1,7 @@
 #!/bin/sh
 cat << EOF
 <link rel="stylesheet" type="text/css" href="/defaultStyle.css" />
-<ul>
+<ul class='header'>
 <li><a href="/cgi-bin/dikt/visAlle_dikt.cgi">Hjem</a></li>
 EOF
 
