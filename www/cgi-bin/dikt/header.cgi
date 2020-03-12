@@ -39,7 +39,7 @@ cat << EOF
       }
     </style>
     <ul>
-      <li><a href="/cgi-bin/dikt/home.cgi">Hjem</a></li>
+      <li><a href="/cgi-bin/dikt/visAlle_dikt.cgi">Hjem</a></li>
 EOF
 
 INNLOGGET_SOM=$(wget http://127.0.0.1:3000/diktsamling/sesjon --header "Cookie: $COOKIE" -qO- | cut -d '"' -f 4)
