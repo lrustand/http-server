@@ -27,7 +27,7 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
 		# Bygger opp put request
 		REQUEST="PUT /diktsamling/dikt/$DIKTID HTTP/1.1\n"
 		REQUEST="${REQUEST}Content-Type: application/json\n"
-		REQUEST="${REQUEST}Content-Length: $(echo $JSON | wc -c)\n"
+		REQUEST="${REQUEST}Content-Length: $(echo -n -e $JSON | wc -c)\n"
 		REQUEST="${REQUEST}Cookie: ${COOKIE}\n"
 		REQUEST="${REQUEST}\n"
 		REQUEST="${REQUEST}${JSON}"
