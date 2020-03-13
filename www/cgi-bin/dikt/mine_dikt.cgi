@@ -24,9 +24,15 @@ for DIKT in $MINE_DIKT; do
 		echo "<br><br>"
 		echo "<form>"
 		echo "<button formaction='endre_dikt.cgi' formmethod='get' name='diktid' value='$DIKTID' type='submit'>Endre</button>"
+		echo "<button formaction='slett_dikt.cgi' formmethod='post' name='diktid' value='$DIKTID' type='submit'>Slett</button>"
 		echo "</form>"
 		echo "</div>"
 	fi
 done
+
+echo "<br><hr><br>"
+echo "<form>"
+echo "<button formaction='slett_dikt.cgi' formmethod='post' name='*' value='' type='submit'>Slett alle mine dikt</button>"
+echo "</form>"
 
 echo "</div>"
