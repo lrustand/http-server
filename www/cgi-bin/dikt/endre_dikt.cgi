@@ -2,6 +2,7 @@
 echo "Content-Type: text/html;charset=utf-8"
 echo
 
+# Funksjon for å fjærne dobbel backslash
 unescapeDiktInnhold(){
 	DIKT=$(echo "$DIKT" | sed 's/\\\\n/\n/g')
 	DIKT=$(echo "$DIKT" | sed 's/\\\\t/\t/g')
@@ -12,17 +13,26 @@ DIKTID=$(echo -n "$QUERY_STRING" | cut -d "=" -f 2)
 if [ "$REQUEST_METHOD" = "POST" ]; then
 	LANG=C IFS= read -r -d '' -n $CONTENT_LENGTH BODY
 	JSON=$(echo -n "{\"$BODY\"}" | sed -e 's/=/":"/g')
+
+	# Henter ut tekststreng for dikt
 	DIKT=$(echo "$JSON" | cut -d '"' -f 4)
+
+	# Bytter ut + med mellomrom og fikser % enkodede tegn
 	DIKT=$(echo "$DIKT" | sed 's@+@ @g;s@%@\\x@g' | xargs -0 printf "%b")
 	unescapeDiktInnhold
 
+	# Sjekker at brukeren ar cookie
 	if [[ ! -z "$COOKIE" ]]; then
+
+		# Bygger opp put request
 		REQUEST="PUT /diktsamling/dikt/$DIKTID HTTP/1.1\n"
 		REQUEST="${REQUEST}Content-Type: application/json\n"
 		REQUEST="${REQUEST}Content-Length: $(echo $JSON | wc -c)\n"
 		REQUEST="${REQUEST}Cookie: ${COOKIE}\n"
 		REQUEST="${REQUEST}\n"
 		REQUEST="${REQUEST}${JSON}"
+
+		# Send request til rest-server
 		RESPONSE=$(echo -e -n "$REQUEST" | nc 127.0.0.1 3000)
 	else
 		ERR="<h1 style='color: red'>Ikke logget inn</h1>"
