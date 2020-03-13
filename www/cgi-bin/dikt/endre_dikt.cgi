@@ -28,9 +28,13 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
 		ERR="<h1 style='color: red'>Ikke logget inn</h1>"
 	fi
 else
-	DIKT=$(wget -qO- "http://127.0.0.1:3000/diktsamling/dikt/$DIKTID")
-	DIKT=$(echo "$DIKT" | grep '"dikt"' | cut -d '"' -f 4)
-	unescapeDiktInnhold
+	if [[ -z "$DIKTID" ]]; then
+		ERR="Ingen dikt valgt"
+	else
+		DIKT=$(wget -qO- "http://127.0.0.1:3000/diktsamling/dikt/$DIKTID")
+		DIKT=$(echo "$DIKT" | grep '"dikt"' | cut -d '"' -f 4)
+		unescapeDiktInnhold
+	fi
 fi
 
 cat << EOF
