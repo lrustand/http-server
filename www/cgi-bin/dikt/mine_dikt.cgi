@@ -21,6 +21,10 @@ for DIKT in $MINE_DIKT; do
 		echo "<div class='dikt'>"
 		echo "<h3><a href=vis_dikt.cgi?diktid=$DIKTID>Dikt #$DIKTID</a></h3>"
 		echo "$INNHOLD"
+		echo "<br><br>"
+		echo "<form>"
+		echo "<button formaction='endre_dikt.cgi' formmethod='get' name='diktid' value='$DIKTID' type='submit'>Endre</button>"
+		echo "</form>"
 		echo "</div>"
 	fi
 done
