@@ -10,7 +10,6 @@ if [[ "$INNLOGGET_SOM" = "null" ]]; then
 	echo '<li style="float:right"><a href="/cgi-bin/dikt/login.cgi">Logg inn</a></li>'
 else
 	echo "<li><a href=opprett_dikt.cgi>Opprett dikt</a>"
-	echo "<li><a href=slett_dikt.cgi>Slett dikt</a>"
 	echo "<li><a href=mine_dikt.cgi>Mine dikt</a>"
 	echo '<li style="float:right"><a href="/cgi-bin/dikt/logout.cgi">Logg ut</a></li>'
 	echo "<li style=\"float:right\" class='white'>Logget inn som $INNLOGGET_SOM </li>"
