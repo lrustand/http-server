@@ -6,9 +6,10 @@ default: container
 server: $(OBJECTS)
 	gcc -static server.c -o server -Wall
 
-container: server www
+container: server www scripts
 	install -d container
 	cp -r www container/.
+	cp -r scripts container/.
 	install -d container/bin
 	install -d container/etc
 	install -d container/var/log

@@ -2,6 +2,7 @@
 echo "Content-Type: text/html;charset=utf-8"
 echo
 
+source /scripts/include.sh
 /www/cgi-bin/dikt/header.cgi
 
 MINE_DIKT=$(wget --header "Cookie: $COOKIE" -qO- http://127.0.0.1:3000/diktsamling/bruker)
@@ -16,11 +17,12 @@ for DIKT in $MINE_DIKT; do
 	}
 	DIKTID=$(hent_felt diktid)
 	INNHOLD=$(hent_felt dikt\")
+	INNHOLD=$(formaterForVisning "$INNHOLD")
 
 	if [[ ! -z "$DIKTID" ]]; then
 		echo "<div class='dikt'>"
 		echo "<h3><a href=vis_dikt.cgi?diktid=$DIKTID>Dikt #$DIKTID</a></h3>"
-		echo "$INNHOLD"
+		echo "<pre>$INNHOLD</pre>"
 		echo "<br><br>"
 		echo "<form>"
 		echo "<button formaction='endre_dikt.cgi' formmethod='get' name='diktid' value='$DIKTID' type='submit'>Endre</button>"
