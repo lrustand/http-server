@@ -6,7 +6,15 @@ echo
 
 ALLE_DIKT=$(wget -qO- http://127.0.0.1:3000/diktsamling/dikt/)
 
-echo "<div class='main'>"
+cat << EOF
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Alle Dikt</title>
+	</head>
+	<body>
+		<div class='main'>
+EOF
 
 IFS="}"
 for DIKT in $ALLE_DIKT; do
@@ -37,4 +45,8 @@ for DIKT in $ALLE_DIKT; do
 	fi
 done
 
-echo "</div>"
+cat << EOF
+		</div>"
+	</body>
+</html>
+EOF
