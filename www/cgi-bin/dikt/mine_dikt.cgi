@@ -17,6 +17,7 @@ cat << EOF
 		<div class='main'>
 EOF
 
+LEST_DIKT=false
 IFS="}"
 for DIKT in $MINE_DIKT; do
 	hent_felt ()
@@ -37,10 +38,11 @@ for DIKT in $MINE_DIKT; do
 		echo "<button formaction='slett_dikt.cgi' formmethod='post' name='diktid' value='$DIKTID' type='submit'>Slett</button>"
 		echo "</form>"
 		echo "</div>"
+		LEST_DIKT=true
 	fi
 done
 
-if [[ $MINE_DIKT == *"diktid"* ]]; then
+if [[ "$LEST_DIKT" = "true" ]]; then
 	echo "<br><hr><br>"
 	echo "<form>"
 	echo "<button formaction='slett_dikt.cgi' formmethod='post' name='*' value='' type='submit'>Slett alle mine dikt</button>"
