@@ -46,7 +46,7 @@ for DIKT in $ALLE_DIKT; do
 done
 
 cat << EOF
-		</div>"
+		</div>
 	</body>
 </html>
 EOF
