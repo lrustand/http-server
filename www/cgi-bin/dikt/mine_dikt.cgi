@@ -32,9 +32,13 @@ for DIKT in $MINE_DIKT; do
 	fi
 done
 
-echo "<br><hr><br>"
-echo "<form>"
-echo "<button formaction='slett_dikt.cgi' formmethod='post' name='*' value='' type='submit'>Slett alle mine dikt</button>"
-echo "</form>"
+if [[ $MINE_DIKT == *"diktid"* ]]; then
+	echo "<br><hr><br>"
+	echo "<form>"
+	echo "<button formaction='slett_dikt.cgi' formmethod='post' name='*' value='' type='submit'>Slett alle mine dikt</button>"
+	echo "</form>"
+else
+	echo "Du har ingen dikt. Opprett et dikt for å se det her"
+fi
 
 echo "</div>"
