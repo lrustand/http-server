@@ -10,7 +10,7 @@ if [ "$REQUEST_METHOD" = "POST" ]; then
 	fi
 	if [ "$NAME" = "*" ]; then
 		REQUEST="DELETE /diktsamling/dikt/ HTTP/1.1\n"
-		echo "Alle dine dikt er nå slettet!"
+		MESSAGE="Alle dine dikt er nå slettet!"
 	else
 		if [[ "$ID" = "" ]]; then
 			echo "Velg et dikt før du prøver å slette!"
