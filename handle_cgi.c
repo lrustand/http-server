@@ -63,6 +63,6 @@ void handle_cgi(char* path, char* query_string, char* method, FILE* request)
 	}
 
 	dprintf(fd[1], "%s", post_data);
-	dprintf(2,"200 OK\n");
+	dprintf(2,"200 OK\n"); // Log
 	exit(0);
 }

@@ -27,10 +27,10 @@ void directory_listing(char *path){
 		if((strcmp(ent->d_name, ".") != 0)
 			&& (strcmp(ent->d_name, "..") != 0))
 		{
-			printf ("%o\t\t", stat_buffer.st_mode & 0777 );
-			printf ("%d\t",	 stat_buffer.st_uid);
-			printf ("%d\t",	 stat_buffer.st_gid);
-			printf ("%s\n",	 ent->d_name);
+			printf ("%o\t\t", stat_buffer.st_mode & 0777 );	// Retigheter
+			printf ("%d\t",	 stat_buffer.st_uid);			// Eier bruker (id)
+			printf ("%d\t",	 stat_buffer.st_gid);			// Eier gruppe (id)
+			printf ("%s\n",	 ent->d_name);					// filnavn
 		}
 	}
 

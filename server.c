@@ -27,7 +27,7 @@ void daemonize()
 {
 	// Forker og lukker foreldreprosessen
 	if (fork()!=0){
-	        exit(0);
+		exit(0);
 	}
 
 	// Setter til sesjonsleder
@@ -38,7 +38,7 @@ void daemonize()
 
 	// Forker og lukker foreldreprosessen
 	if (fork()!=0){
-	        exit(0);
+		exit(0);
 	}
 
 	// Binder stderr til loggfila
